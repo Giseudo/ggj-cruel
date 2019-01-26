@@ -1,0 +1,46 @@
+@import "neat";
+
+$neat-grid: (
+	columns: 6,
+	gutter: 25px,
+);
+
+$max-xs: 0;
+$max-sm: 543px;
+$max-md: 767px;
+$max-lg: 991px;
+$max-xl: 1100px;
+
+// Large Desktop
+$large-desktop-grid: (
+	media: 'screen and (min-width: ' + $max-xl + ')',
+	columns: 12
+);
+
+// Small Desktop
+$small-desktop-grid: (
+	media: 'screen and (min-width: ' + $max-lg + ') and (max-width: ' + $max-xl + ')',
+	columns: 12
+);
+
+// Desktop
+$desktop-grid: (
+	media: 'screen and (min-width: ' + $max-lg + ')',
+	columns: 12
+);
+
+// Tablet
+$tablet-grid: (
+	media: 'screen and (min-width: ' + $max-md + ') and (max-width: ' + $max-lg + ')',
+	columns: 8
+);
+
+// Tablet + Smarphone
+$smartphone-tablet-grid: (
+	media: 'screen and (max-width: ' + $max-lg + ')'
+);
+
+// Smartphone
+$smartphone-grid: (
+	media: 'screen and (max-width: ' + $max-md + ')'
+);

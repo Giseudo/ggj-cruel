@@ -1,0 +1,19 @@
+@mixin outer-container() {
+	margin-left: auto;
+	margin-right: auto;
+	@include grid-media($large-desktop-grid) {
+		max-width: $max-xl;
+		@include grid-container;
+	}
+	@include grid-media($small-desktop-grid) {
+		max-width: $max-lg;
+		@include grid-container;
+	}
+	@include grid-media($tablet-grid) {
+		max-width: 100%;
+		@include grid-container;
+	}
+	@include grid-media($smartphone-grid) {
+		max-width: 100%;
+	}
+}
