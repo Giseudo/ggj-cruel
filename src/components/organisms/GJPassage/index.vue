@@ -1,9 +1,11 @@
 <template>
 	<div class="gj-passage" @click="onClick">
 		<div class="gj-passage__header">
-			<gj-name class="gj-passage__name" v-if="name">
-				{{ name }}
-			</gj-name>
+			<transition name="name">
+				<gj-name class="gj-passage__name" v-if="name">
+					{{ name }}
+				</gj-name>
+			</transition>
 		</div>
 
 		<div class="gj-passage__scrollbar swiper-container">
@@ -180,5 +182,20 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 		transform: translateY(0px);
 		opacity: 1;
 	}
+}
+
+// Name
+.name-enter-active, .name-leave-active {
+	transition: all .3s $easeInOutQuad;
+}
+
+.name-enter{
+	transform: translateX(-20%);
+	opacity: 0;
+}
+
+.name-leave-active{
+	transform: translateX(-20%);
+	opacity: 0;
 }
 </style>
