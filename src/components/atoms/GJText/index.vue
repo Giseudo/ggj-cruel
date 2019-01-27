@@ -34,9 +34,17 @@ export default {
 <style lang="scss">
 .gj-text{
 	color: black;
-	font-family: Arial;
+	font-family: Roboto;
 	&--body{
 		font-size: 14px;
+	}
+	&--speech{
+		font-size: 14px;
+		line-height: 24px;
+		font-family: Roboto Slab;
+	}
+	&--small{
+		font-size: 12px;
 	}
 
 	&.is-dark{
@@ -44,6 +52,12 @@ export default {
 	}
 	&.is-bold{
 		font-weight: 700;
+	}
+
+	blockquote{
+		border-left: 2px solid white;
+		margin: 0;
+		padding-left: 30px;
 	}
 }
 </style>

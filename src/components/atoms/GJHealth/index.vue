@@ -2,7 +2,10 @@
 	<div
 		class="gj-health"
 		:class="[
-			`gj-health--${size}`
+			`gj-health--${size}`,
+			{
+				'is-dead': dead
+			}
 		]"
 	>
 		<div
@@ -16,9 +19,9 @@
 				stroke-dasharray="113.076"
 				:stroke-dashoffset="113.076 * (1 - 1)"
 			/>
-			<circle cx="21" cy="21" r="18" fill="none" stroke="#6db227" stroke-width="5"
+			<circle cx="21" cy="21" r="18" fill="none" :stroke="color" stroke-width="5"
 				stroke-dasharray="113.076"
-				:stroke-dashoffset="113.076 * (1 - (value / total))"
+				:stroke-dashoffset="radius"
 			/>
 		</svg>
 	</div>
@@ -29,11 +32,11 @@ import { TweenMax, Power2 } from 'gsap/TweenMax'
 
 export default {
 	props: {
-		total: {
+		value: {
 			type: Number,
 			default: 100
 		},
-		value: {
+		current: {
 			type: Number,
 			default: 70
 		},
@@ -55,14 +58,46 @@ export default {
 		}
 	},
 
+	computed: {
+		radius() {
+			return 113.076 * (1 - (this.current / this.value))
+		},
+
+		color() {
+			let percent = (this.current * 100) / this.value
+
+			if (percent > 50)
+				return '#6db227'
+			else if (percent > 20)
+				return 'orange'
+			else
+				return '#f4424b'
+		},
+
+		dead() {
+			return this.current == 0
+		}
+	},
+
+	watch: {
+		current(value) {
+			let circle = this.$el.querySelector('.gj-health__circle circle:last-child')
+
+			TweenMax.to(circle, 1, {
+				strokeDashoffset: this.radius,
+				stroke: this.color,
+				ease: Power2.easeOut
+			})
+		}
+	},
+
 	mounted() {
-		let circle = this.$el.querySelector('.gj-health__circle circle:last-child'),
-			total = +circle.attributes.getNamedItem('stroke-dashoffset').value
+		let circle = this.$el.querySelector('.gj-health__circle circle:last-child')
 
 		circle.style.strokeDashoffset = 100
 
 		TweenMax.to(circle, 2, {
-			strokeDashoffset: total,
+			strokeDashoffset: this.radius,
 			ease: Power2.easeOut
 		})
 	}
@@ -73,10 +108,12 @@ export default {
 .gj-health{
 	position: relative;
 	display: inline-block;
+	transition: opacity .2s $easeInOutQuad;
 	&__thumbnail{
 		background-size: cover;
 		background-position: center;
 		background-color: lightgrey;
+		transform: scale(.9);
 	}
 	&__circle{
 		position: absolute;
@@ -90,24 +127,24 @@ export default {
 	&--sm{
 		.gj-health{
 			&__thumbnail{
-				width: 40px;
-				height: 40px;
-				border-radius: 40px;
+				width: 36px;
+				height: 36px;
+				border-radius: 36px;
 			}
 			&__circle{
-				width: 42px;
+				width: 38px;
 			}
 		}
 	}
 	&--md{
 		.gj-health{
 			&__thumbnail{
-				width: 60px;
-				height: 60px;
-				border-radius: 60px;
+				width: 64px;
+				height: 64px;
+				border-radius: 64px;
 			}
 			&__circle{
-				width: 62px;
+				width: 66px;
 			}
 		}
 	}
@@ -122,6 +159,10 @@ export default {
 				width: 82px;
 			}
 		}
+	}
+
+	&.is-dead{
+		opacity: .5;
 	}
 }
 </style>

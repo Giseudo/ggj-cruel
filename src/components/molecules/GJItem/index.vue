@@ -4,7 +4,7 @@
 		:class="{'is-dark': dark}"
 	>
 		<gj-sprite class="gj-item__sprite" :name="sprite" />
-		<gj-text class="gj-item__name" :dark="dark" :bold="bold">
+		<gj-text class="gj-item__name" :dark="dark" :bold="bold" type="small">
 			{{ name }}
 		</gj-text>
 	</div>
@@ -22,7 +22,7 @@ export default {
 
 	props: {
 		name: {
-			type: Number,
+			type: String|Number,
 			default: 500
 		},
 		sprite: {

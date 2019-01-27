@@ -5,8 +5,8 @@
 			`gj-mana--${size}`
 		]"
 	>
-	<div class="gj-mana__wrapper" :data-amount="`${value}/${total}`">
-			<span class="gj-mana__progress" :style="{ width: `${(value * 100) / total}%` }">
+	<div class="gj-mana__wrapper" :data-amount="`${current}/${value}`">
+			<span class="gj-mana__progress" :style="{ width: `${(current * 100) / value}%` }">
 			</span>
 		</div>
 	</div>
@@ -17,11 +17,11 @@ import { TweenMax, Power2 } from 'gsap/TweenMax'
 
 export default {
 	props: {
-		total: {
+		value: {
 			type: Number,
 			default: 200
 		},
-		value: {
+		current: {
 			type: Number,
 			default: 140
 		},
@@ -37,7 +37,7 @@ export default {
 		progress.style.width = 0
 
 		TweenMax.to(progress, 2, {
-			width: ((this.value * 100) / this.total) + '%',
+			width: ((this.current * 100) / this.value) + '%',
 			ease: Power2.easeOut
 		})
 	}
@@ -53,12 +53,12 @@ export default {
 		&:before{
 			content: attr(data-amount);
 			position: absolute;
-			left: 5px;
+			left: 10px;
 			top: 50%;
-			font-size: 11px;
+			font-size: 7px;
 			font-weight: 700;
 			letter-spacing: 1px;
-			font-family: Arial;
+			font-family: Roboto;
 			color: white;
 			z-index: 10;
 			transform: translate(0, -50%);
@@ -78,7 +78,7 @@ export default {
 	&--sm{
 		.gj-mana{
 			&__wrapper{
-				height: 16px;
+				height: 10px;
 			}
 		}
 	}

@@ -3,7 +3,8 @@
 		class="gj-sprite"
 		:style="{ backgroundImage: `url(${sprites})` }"
 		:class="[
-			`gj-sprite--${name}`
+			`gj-sprite--${name}`,
+			`gj-sprite--${size}`
 		]"
 	>
 	</div>
@@ -17,6 +18,10 @@ export default {
 		name: {
 			type: String,
 			default: 'gold'
+		},
+		size: {
+			type: String,
+			default: 'md'
 		}
 	},
 
@@ -33,6 +38,30 @@ export default {
 	display: inline-block;
 	&--gold{
 		background-position: 0 -416px;
+	}
+	&--wand{
+		background-position: -160px -192px;
+	}
+	&--dagger{
+		background-position: 0px -192px;
+	}
+	&--orb{
+		background-position: -256px -608px;
+	}
+	&--skull{
+		background-position: -320px -0px;
+	}
+
+
+	// Size
+	&--sm{
+		transform: scale(.6);
+	}
+	&--md{
+		transform: scale(1);
+	}
+	&--lg{
+		transform: scale(1.2);
 	}
 }
 </style>
