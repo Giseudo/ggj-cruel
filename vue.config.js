@@ -1,6 +1,7 @@
 var webpack = require('webpack')
 
 module.exports = {
+	outputDir: './docs',
 	css: {
 		loaderOptions: {
 			sass: {
@@ -11,13 +12,4 @@ module.exports = {
 			}
 		}
 	},
-	configureWebpack: {
-		plugins: [
-			new webpack.DefinePlugin({
-				'process.env': {
-					// 'API_URL': JSON.stringify(process.env.API_URL)
-				}
-			})
-		]
-	}
 }

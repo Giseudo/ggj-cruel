@@ -63,7 +63,7 @@ export default {
 		},
 		background: {
 			type: String,
-			default: require('@/assets/images/bgs/village-01.jpg')
+			default: require('@/assets/images/bgs/forest-01.jpg')
 		},
 		passage: {
 			type: Object,

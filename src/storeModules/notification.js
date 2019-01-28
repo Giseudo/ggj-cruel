@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/store'
+import { deepClone } from 'lodash'
 
 export default {
 	namespaced: true,
@@ -23,7 +24,7 @@ export default {
 				timeout: payload.timeout || 5000
 			}
 
-			state.alerts.unshift(alert)
+			state.alerts.push(alert)
 
 			if (state.alerts.length == 1)
 				store.commit('notification/setCurrent', 0)
@@ -31,7 +32,7 @@ export default {
 
 		setCurrent(state, index) {
 			// Set current
-			state.current = state.alerts[index]
+			Vue.set(state, 'current', state.alerts[index])
 
 			// Play sound if it has
 			if (state.current.sound)
@@ -40,16 +41,16 @@ export default {
 			// Wait for timeout
 			setTimeout(() => {
 				// Reset current
-				state.current = null
-
-				// Remove from list
-				state.alerts.splice(index, 1)
+				Vue.set(state, 'current', null)
 
 				// Wait delay for new message
-				if (state.alerts.length > 0)
-					setTimeout(() => {
+				setTimeout(() => {
+					// Remove from list
+					state.alerts.splice(index, 1)
+
+					if (state.alerts.length > 0)
 						store.commit('notification/setCurrent', 0)
-					}, 400)
+				}, 400)
 			}, state.current.timeout)
 		}
 	},

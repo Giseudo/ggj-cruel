@@ -1,5 +1,6 @@
 <template>
 	<gj-scene class="gj-game"
+		v-if="scene"
 		:status="status"
 		:dad="dad"
 		:mom="mom"
@@ -17,14 +18,14 @@
 import GJScene from '@/components/templates/GJScene'
 import store from '@/store'
 import { mapGetters } from 'vuex'
+import Vue from 'vue'
 
 export default {
 	beforeRouteEnter(to, from, next) {
-		store.dispatch('scene/fetch')
-			.then(() => {
-				store.commit('scene/setScene', 'cruel')
-				next()
-			})
+		Vue.nextTick(() => {
+			store.dispatch('scene/fetch')
+				.then(next)
+		})
 	},
 
 	components: {
@@ -32,8 +33,12 @@ export default {
 	},
 
 	data: () => ({
-		status: false
+		status: false,
 	}),
+
+	mounted() {
+		this.$store.commit('scene/setScene', 'cruel')
+	},
 
 	computed: {
 		dad: function () { return this.$store.state.game.dad },
@@ -47,31 +52,6 @@ export default {
 			background: 'scene/getBackground',
 			notification: 'notification/getCurrent'
 		})
-	},
-
-	methods: {
-		onClick() {
-			/*
-			this.$store.commit('game/damage', {
-				target: 'dad',
-				amount: 30
-			})
-			this.$store.commit('game/damage', {
-				target: 'mom',
-				amount: 10
-			})
-			this.$store.commit('game/damage', {
-				target: 'son',
-				amount: 30
-			})
-			this.$store.commit('game/damage', {
-				target: 'daughter',
-				amount: 60
-			})
-			this.$store.commit('game/spend', 20)
-			*/
-
-		}
 	}
 }
 </script>

@@ -56,17 +56,20 @@ export default {
 		setScene(state, payload) {
 			state.current = payload
 
-			state.scenes[state.current].init()
+			if (state.scenes)
+				state.scenes[state.current].init()
 		}
 	},
 
 	actions: {
 		fetch({ state, commit }, payload) {
 			return new Promise((resolve, reject) => {
-				let scenes = require('@/data/scenes').default()
+				let scenes = require('@/data/scenes').default(store)
 
 				state.scenes = scenes
-				resolve()
+
+				// Resolve
+				resolve(scenes)
 			})
 		}
 	}

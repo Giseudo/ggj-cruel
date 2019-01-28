@@ -10,7 +10,8 @@ export default {
 			'great-unknown': require('@/assets/audios/musics/great-unknown.mp3')
 		},
 		sounds: {
-			'punch': require('@/assets/audios/effects/punch-01.mp3')
+			'punch': require('@/assets/audios/effects/punch-01.mp3'),
+			'sword-01': require('@/assets/audios/effects/sword-01.mp3')
 		},
 	},
 

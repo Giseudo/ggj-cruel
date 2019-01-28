@@ -9,6 +9,9 @@
 import { disableBodyScroll } from 'body-scroll-lock'
 
 export default {
+	created() {
+		this.$store.commit('game/init')
+	},
 	mounted() {
 		disableBodyScroll(this.$el)
 	}

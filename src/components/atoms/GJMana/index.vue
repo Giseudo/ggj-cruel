@@ -6,7 +6,7 @@
 		]"
 	>
 	<div class="gj-mana__wrapper" :data-amount="`${current}/${value}`">
-			<span class="gj-mana__progress" :style="{ width: `${(current * 100) / value}%` }">
+			<span class="gj-mana__progress">
 			</span>
 		</div>
 	</div>
@@ -28,6 +28,17 @@ export default {
 		size: {
 			type: String,
 			default: 'md' // sm | md | lg
+		}
+	},
+
+	watch: {
+		current(value) {
+			let progress = this.$el.querySelector('.gj-mana__progress')
+
+			TweenMax.to(progress, 2, {
+				width: ((value * 100) / this.value) + '%',
+				ease: Power2.easeOut
+			})
 		}
 	},
 

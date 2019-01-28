@@ -11,27 +11,32 @@
 		<div class="gj-status__wrapper">
 			<div class="gj-status__top">
 				<div class="gj-status__left">
-					<gj-health
-						v-if="mom && !mom.hide"
-						size="sm"
-						:image="mom.avatar"
-						:current="mom.hp[0]"
-						:value="mom.hp[1]"
-					/>
-					<gj-health
-						v-if="son && !son.hide"
-						size="sm"
-						:image="son.avatar"
-						:current="son.hp[0]"
-						:value="son.hp[1]"
-					/>
-					<gj-health
-						v-if="daughter && !daughter.hide"
-						size="sm"
-						:image="daughter.avatar"
-						:current="daughter.hp[0]"
-						:value="daughter.hp[1]"
-					/>
+					<transition-group name="status">
+						<gj-health
+							v-if="mom && !mom.hide"
+							size="sm"
+							:key="0"
+							:image="mom.avatar"
+							:current="mom.hp[0]"
+							:value="mom.hp[1]"
+						/>
+						<gj-health
+							v-if="son && !son.hide"
+							size="sm"
+							:key="1"
+							:image="son.avatar"
+							:current="son.hp[0]"
+							:value="son.hp[1]"
+						/>
+						<gj-health
+							v-if="daughter && !daughter.hide"
+							size="sm"
+							:key="2"
+							:image="daughter.avatar"
+							:current="daughter.hp[0]"
+							:value="daughter.hp[1]"
+						/>
+					</transition-group>
 				</div>
 
 				<gj-item
