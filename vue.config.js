@@ -1,7 +1,6 @@
 var webpack = require('webpack')
 
 module.exports = {
-	outputDir: './docs',
 	css: {
 		loaderOptions: {
 			sass: {

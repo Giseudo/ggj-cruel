@@ -7,6 +7,7 @@
 		"build": "vue-cli-service build",
 		"build:storybook": "vue-cli-service build:storybook -c private/storybook && node ./build-scripts/fix-static-storybook.js",
 		"serve:storybook": "vue-cli-service serve:storybook -p 8001 -c private/storybook"
+		"deploy": "git subtree push --prefix dist origin gh-pages"
 	},
 	"dependencies": {
 		"body-scroll-lock": "^2.6.1",
