@@ -46,6 +46,9 @@ export default {
 	&--small{
 		font-size: 12px;
 	}
+	&--lead{
+		font-size: 46px;
+	}
 
 	&.is-dark{
 		color: white;

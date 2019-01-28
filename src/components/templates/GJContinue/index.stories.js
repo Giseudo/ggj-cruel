@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/vue'
-import GJMap from './index'
+import GJContinue from './index'
 
-storiesOf('Template - gj-map', module)
-	.add('default', () => GJMap)
+storiesOf('Template - gj-continue', module)
+	.add('default', () => GJContinue)
