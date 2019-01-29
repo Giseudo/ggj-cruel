@@ -92,6 +92,9 @@ export default {
 			if (target.dead)
 				return
 
+			if (payload.sound)
+				store.commit('audio/play', payload.sound)
+
 			if (hp - payload.amount >= 0)
 				hp -= payload.amount
 			else

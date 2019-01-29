@@ -32,7 +32,7 @@ Meses se passaram e Thomas e Almir continuaram na Bavária pois acharam que não
 					`,
 					next: () => {
 						store.commit('scene/setPassage', null)
-						setTimeout(() => store.commit('scene/setPassage', '0.2'), 2000)
+						setTimeout(() => store.commit('scene/setPassage', '0.2'), 1000)
 					}
 				},
 
@@ -785,6 +785,10 @@ Se vai lutar eu também vou!
 					`,
 					next: () => {
 						store.commit('scene/setPassage', '25.1.1')
+						store.commit('notification/add', {
+							sprite: 'letter',
+							message: mom.name + ' juntou-se a você.'
+						})
 						store.commit('game/show', 'mom')
 					}
 				},
@@ -819,8 +823,11 @@ A besta é uma arma fatal, seu único defeito é a demora para ser recarregada. 
 
 				'25.5': {
 					exit: () => {
-						store.commit('game/damage', { target: 'dad', amount: 100 })
-						store.commit('audio/play', 'sword-01')
+						store.commit('game/damage', {
+							target: 'dad',
+							amount: 100,
+							sound: 'sword-01'
+						})
 					},
 					text: `
 Sua mulher grita enquanto você é trespassado por espadas de todos os lados.
