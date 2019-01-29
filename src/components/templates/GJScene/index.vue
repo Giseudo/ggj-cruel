@@ -38,6 +38,7 @@
 				:text="passage.text"
 				:actions="passage.actions"
 				:next="passage.next"
+				:first="passage.first"
 			/>
 		</transition>
 	</div>

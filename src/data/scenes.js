@@ -19,23 +19,51 @@ export default (store) => {
 
 			passages: {
 				'0': {
+					first: true,
 					text: `
-A muito, muito tempo atrás. No continente de Jaule, um mago e sua família se viram obrigados a tomar decisões difíceis. Tais decisões fariam toda diferença entre manter todo mundo vivo ou não...
+A muito, muito tempo atrás. No continente de Jaule, Thomas Webtalle e Almir Al’Hajid, uma dupla de magos experientes recebeu um contrato de um forasteiro. Um feitiço tão poderoso que poderia derrubar até mesmo uma enorme muralha, o contratante pagou seu peso em ouro e garantiu que não utilizaria o feitiço na Bavaria, reinado da família Bavarosa. O contratante era ruivo e utilizava os trajes do país de Galis, túnica vermelha e ornamentada com ouro, Galis não tinha nenhuma rixa com a Bavária, e Almir convenceu Thomas a aceitar o trabalho. O que eles não sabiam é que seu contratante era Timury Garkim um rebelde insurgente, ele usou o feitiço criado por Thomas e Almir para destruir uma das torres do rei Bavarosa, enquanto o rei presidia uma reunião com seus líderes e generais. Timury foi morto no atentado contra o rei, levou consigo metade dos oficiais da Bavária. Esse evento ficou conhecido como a queda da torre.
 					`,
 					next: () => store.commit('scene/setPassage', '0.1')
 				},
 
 				'0.1': {
 					text: `
-São tempos difíceis, e tempos piores estão por vir - você pensa enquanto corre para casa. Você e seu amigo Almir são uma dupla de magos que realizaram um serviço a algum tempo atrás para um inimigo do rei. A profissão de mago não é legalizada no reinado da família Bavarosa, apesar de tolerada. Boatos chegaram aos seus ouvidos de que o rei descobriu  o envolvimento de vocês dois, mas você não tinha certeza, até poucos minutos atrás.
+Meses se passaram e Thomas e Almir continuaram na Bavária pois acharam que não tinha como o rei ligar o atentado aos dois. Contudo, de uns tempos para cá, cada vez mais rebeldes tem sido capturados e levados até o castelo do rei. O medo paira sobre os dois, Thomas recebeu o recado de um garoto que dizia que Almir desejava vê-lo com urgência…
 					`,
-					next: () => store.commit('scene/setPassage', '0.2')
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '0.2'), 2000)
+					}
 				},
 
 				'0.2': {
 					init: () => {
 						store.commit('game/show', 'dad')
 					},
+					first: true,
+					text: `
+Thomas vai ao encontro de Almir assim que recebe o recado. Chegando lá se depara com uma cena estarrecedora, seu amigo Almir, sujo de sangue e caído sobre a mesa. Ao se aproximar e virar o corpo, as entranhas de Almir escorregam pelo chão, sujando suas botas de sangue e merda. Na mesa, entalhado por uma faca, está escrito:
+					
+> Você é o próximo!
+					`,
+					next: () => store.commit('scene/setPassage', '0.3')
+				},
+
+				'0.3': {
+					text: `
+Então Thomas volta para casa correndo para tentar salvar sua família a tempo, na noite escura o suor frio cai pela sua testa, enquanto você desliza pelas vielas pegando o máximo de atalhos.
+					`,
+					next: () => store.commit('scene/setPassage', '0.4')
+				},
+
+				'0.4': {
+					text: `
+Já é quase noite quando você chega em sua casa ofegante, escancarando a porta. Sua esposa Judith se levanta da cadeira sobressaltada, seus filhos comem a sopa e também arregalam os olhos ao te ver chegar daquele jeito. Judith derruba a sopa quente nos próprios pés.
+					`,
+					next: () => store.commit('scene/setPassage', '0.5')
+				},
+
+				'0.5': {
 					name: mom.name,
 					text: `
 Mas que me... que susto ${dad.name}
@@ -43,19 +71,31 @@ Mas que me... que susto ${dad.name}
 					actions: [
 						{
 							label: 'Precisamos fugir!',
-							callback: () => store.commit('scene/setPassage', '1')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '1'), 1000)
+							}
 						},
 						{
 							label: 'Esconda as crianças!',
-							callback: () => store.commit('scene/setPassage', '2')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '2'), 1000)
+							}
 						},
 						{
 							label: 'Pegue as crianças e fuja!',
-							callback: () => store.commit('scene/setPassage', '3')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '3'), 1000)
+							}
 						},
 						{
 							label: 'Tentar agir normalmente.',
-							callback: () => store.commit('scene/setPassage', '4')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '4'), 1000)
+							}
 						},
 					]
 				},

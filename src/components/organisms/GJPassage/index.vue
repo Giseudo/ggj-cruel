@@ -1,5 +1,9 @@
 <template>
-	<div class="gj-passage" @click="onClick">
+	<div
+		class="gj-passage"
+		:class="{ 'is-first': first }"
+		@click="onClick"
+	>
 		<div class="gj-passage__header">
 			<transition name="name">
 				<gj-name class="gj-passage__name" v-if="name">
@@ -102,6 +106,11 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 		next: {
 			type: Function,
 			default: null
+		},
+
+		first: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -166,6 +175,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 		bottom: 20px;
 		right: 20px;
 		z-index: 10;
+	}
+
+	&.is-first{
+		.gj-passage{
+			&__text::first-letter{
+				font-size: 48px;
+				margin: 10px 5px 10px 0;
+				float: left;
+			}
+		}
 	}
 }
 

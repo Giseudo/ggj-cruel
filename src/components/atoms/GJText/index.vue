@@ -63,8 +63,10 @@ export default {
 
 	blockquote{
 		border-left: 2px solid white;
-		margin: 0;
-		padding-left: 30px;
+		margin: 15px 0;
+		padding: 5px 20px;
+		font-style: italic;
+		font-size: 16px;
 	}
 }
 </style>

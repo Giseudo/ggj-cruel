@@ -1,5 +1,5 @@
 <template>
-	<div class="gj-status">
+	<div class="gj-status" @click="mom.hide = !mom.hide; son.hide = !son.hide; daughter.hide = !daughter.hide">
 		<gj-hero
 			class="gj-status__hero"
 			:name="dad.name"

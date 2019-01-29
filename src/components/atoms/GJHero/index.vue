@@ -136,9 +136,8 @@ export default {
 		width: 80px;
 		height: 80px;
 		border-radius: 80px;
-		background-size: 110% 110%;
+		background-size: cover;
 		background-position: center;
-		border: 2px solid rgba($c-darkred, .3);
 	}
 	&__wrapper{
 		position: absolute;
