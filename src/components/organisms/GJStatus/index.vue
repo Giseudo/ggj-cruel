@@ -1,70 +1,60 @@
 <template>
 	<div class="gj-status">
-		<gj-health
+		<gj-hero
 			class="gj-status__hero"
-			size="md"
-			:current="dad.hp[0]"
-			:value="dad.hp[1]"
+			:name="dad.name"
 			:image="dad.avatar"
-		/>
+			:health="dad.hp"
+			:mana="dad.mana"
+			:dark="dark"
+		>
+		</gj-hero>
 
-		<gj-mana
-			size="lg"
-			class="gj-status__mana"
-			:class="{'is-disabled': dad.dead}"
-			:current="dad.mana[0]"
-			:value="dad.mana[1]"
-		/>
-
-		<div class="gj-status__wrapper">
-			<transition-group name="status" class="gj-status__left">
-				<gj-health
-					v-if="mom && !mom.hide"
-					size="sm"
-					:key="0"
-					:image="mom.avatar"
-					:current="mom.hp[0]"
-					:value="mom.hp[1]"
-				/>
-				<gj-health
-					v-if="son && !son.hide"
-					size="sm"
-					:key="1"
-					:image="son.avatar"
-					:current="son.hp[0]"
-					:value="son.hp[1]"
-				/>
-				<gj-health
-					v-if="daughter && !daughter.hide"
-					size="sm"
-					:key="2"
-					:image="daughter.avatar"
-					:current="daughter.hp[0]"
-					:value="daughter.hp[1]"
-				/>
-			</transition-group>
-
-			<gj-item
-				class="gj-status__gold"
-				sprite="gold"
-				:name="gold"
-				:dark="true"
-				:bold="true"
+		<transition-group name="parent" class="gj-status__container">
+			<gj-health
+				v-if="mom && !mom.hide"
+				size="sm"
+				:key="0"
+				:image="mom.avatar"
+				:current="mom.hp[0]"
+				:value="mom.hp[1]"
 			/>
-		</div>
+			<gj-health
+				v-if="son && !son.hide"
+				size="sm"
+				:key="1"
+				:image="son.avatar"
+				:current="son.hp[0]"
+				:value="son.hp[1]"
+			/>
+			<gj-health
+				v-if="daughter && !daughter.hide"
+				size="sm"
+				:key="2"
+				:image="daughter.avatar"
+				:current="daughter.hp[0]"
+				:value="daughter.hp[1]"
+			/>
+		</transition-group>
+
+		<gj-money
+			class="gj-status__gold"
+			:value="gold"
+			:dark="dark"
+		/>
 	</div>
 </template>
 
 <script>
-import GJMana from '@/components/atoms/GJMana'
+import GJHero from '@/components/atoms/GJHero'
 import GJHealth from '@/components/atoms/GJHealth'
-import GJItem from '@/components/molecules/GJItem'
+import GJMoney from '@/components/molecules/GJMoney'
 
 export default {
 	components: {
-		'gj-mana': GJMana,
+		'gj-hero': GJHero,
 		'gj-health': GJHealth,
-		'gj-item': GJItem,
+		'gj-money': GJMoney,
 	},
 
 	props: {
@@ -80,6 +70,7 @@ export default {
 			type: Object,
 			default: () => ({
 				hp: [100, 100],
+				hide: true,
 				avatar: require('@/assets/images/chars/kaine.jpg')
 			})
 		},
@@ -87,6 +78,7 @@ export default {
 			type: Object,
 			default: () => ({
 				hp: [10, 100],
+				hide: true,
 				avatar: require('@/assets/images/chars/emil.jpg')
 			})
 		},
@@ -94,12 +86,17 @@ export default {
 			type: Object,
 			default: () => ({
 				hp: [40, 100],
+				hide: true,
 				avatar: require('@/assets/images/chars/yonah.jpg')
 			})
 		},
 		gold: {
 			type: Number|String,
 			default: 500
+		},
+		dark: {
+			type: Boolean,
+			default: false
 		}
 	}
 }
@@ -109,40 +106,46 @@ export default {
 .gj-status{
 	display: flex;
 	position: relative;
+	align-items: center;
+	justify-content: space-between;
 	&__hero{
-		margin-right: 10px;
+		max-width: 300px;
+		flex: 0 100%;
+		z-index: 10;
 	}
-	&__wrapper{
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	&__left{
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
+	&__container{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 84px;
+		height: 84px;
 		.gj-health{
-			margin-right: 10px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			&:nth-child(1){
+				transform: translate(-120%, 135%) scale(1);
+			}
+			&:nth-child(2){
+				transform: translate(0%, 135%) scale(1);
+			}
+			&:nth-child(3){
+				transform: translate(100%, 70%) scale(1);
+			}
 		}
 	}
 	&__gold{
+		margin-left: 10px;
 	}
-	&__top{
-		flex: 1;
-		display: flex;
-		justify-content: space-between;
-	}
-	&__mana{
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		right: 80px;
-		transition: opacity .2s $easeInOutQuad;
-		z-index: -1;
-		&.is-disabled{
-			opacity: .4;
-		}
-	}
+}
+
+// Status
+.parent-enter-active, .parent-leave-active {
+	transition: all .3s $easeInOutQuad;
+}
+
+.parent-enter,
+.parent-leave-active{
+	transform: translate(-50%, -50%) scale(0) !important;
 }
 </style>

@@ -21,7 +21,7 @@ export default {
 				sprite: payload.sprite,
 				message: payload.message,
 				sound: payload.sound,
-				timeout: payload.timeout || 5000
+				timeout: payload.timeout || 3000
 			}
 
 			state.alerts.push(alert)

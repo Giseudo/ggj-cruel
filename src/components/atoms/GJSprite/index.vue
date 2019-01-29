@@ -36,7 +36,13 @@ export default {
 	width: 32px;
 	height: 32px;
 	display: inline-block;
+	&--letter{
+		background-position: 0 -384px;
+	}
 	&--gold{
+		background-position: -320px -608px;
+	}
+	&--gold-bag{
 		background-position: 0 -416px;
 	}
 	&--wand{

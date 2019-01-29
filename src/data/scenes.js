@@ -10,7 +10,7 @@ export default (store) => {
 				store.commit('scene/setBackground', require('@/assets/images/bgs/village-01.jpg'))
 
 				// Show status
-				store.commit('game/show', 'dad')
+				// store.commit('game/show', 'dad')
 
 				setTimeout(() =>
 					store.commit('scene/setPassage', '0')
@@ -26,9 +26,6 @@ A muito, muito tempo atrás. No continente de Jaule, um mago e sua família se v
 				},
 
 				'0.1': {
-					init: () => {
-						store.commit('game/show', 'dad')
-					},
 					text: `
 São tempos difíceis, e tempos piores estão por vir - você pensa enquanto corre para casa. Você e seu amigo Almir são uma dupla de magos que realizaram um serviço a algum tempo atrás para um inimigo do rei. A profissão de mago não é legalizada no reinado da família Bavarosa, apesar de tolerada. Boatos chegaram aos seus ouvidos de que o rei descobriu  o envolvimento de vocês dois, mas você não tinha certeza, até poucos minutos atrás.
 					`,
@@ -36,6 +33,9 @@ São tempos difíceis, e tempos piores estão por vir - você pensa enquanto cor
 				},
 
 				'0.2': {
+					init: () => {
+						store.commit('game/show', 'dad')
+					},
 					name: mom.name,
 					text: `
 Mas que me... que susto ${dad.name}
@@ -61,6 +61,9 @@ Mas que me... que susto ${dad.name}
 				},
 
 				'1': {
+					init: () => {
+						store.commit('game/show', 'dad')
+					},
 					text: `
 Você puxa sua Judith até um canto da sala e tenta explicar a situação.
 					`,
@@ -108,9 +111,6 @@ Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arr
 				},
 
 				'2': {
-					init: () => {
-						store.commit('game/save')
-					},
 					name: dad.name,
 					text: `
 Rápido! Esconda as crianças Judith!
@@ -778,7 +778,7 @@ A besta é uma arma fatal, seu único defeito é a demora para ser recarregada. 
 				},
 
 				'25.5': {
-					init: () => {
+					exit: () => {
 						store.commit('game/damage', { target: 'dad', amount: 100 })
 						store.commit('audio/play', 'sword-01')
 					},

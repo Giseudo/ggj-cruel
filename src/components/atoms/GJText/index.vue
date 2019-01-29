@@ -43,6 +43,10 @@ export default {
 		line-height: 24px;
 		font-family: Roboto Slab;
 	}
+	&--tiny{
+		font-size: 10px;
+		line-height: 11px;
+	}
 	&--small{
 		font-size: 12px;
 	}

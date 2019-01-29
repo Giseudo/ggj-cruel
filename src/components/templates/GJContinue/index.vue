@@ -5,11 +5,11 @@
 				Game Over
 			</gj-text>
 
-			<gj-button class="gj-continue__button" theme="default">
-				Continuar do último checkpoint
+			<gj-button class="gj-continue__button" theme="default" @click="$emit('continue')">
+				Último checkpoint	
 			</gj-button>
 
-			<gj-button class="gj-continue__button" theme="accent">
+			<gj-button class="gj-continue__button" theme="default" @click="$emit('quit')">
 				Voltar para início
 			</gj-button>
 		</div>
@@ -30,7 +30,11 @@ export default {
 
 <style lang="scss">
 .gj-continue{
-	background: $c-black;
+	background: linear-gradient(
+		to top,
+		rgba(33, 51, 78, 0.8) 0%,
+		rgba(241, 18, 18, 0.41) 100%
+	);
 	display: flex;
 	flex-flow: column;
 	align-items: center;
@@ -38,7 +42,9 @@ export default {
 	min-height: 400px;
 	&__wrapper{
 		text-align: center;
-		width: 300px;
+		max-width: 300px;
+		padding: 20px;
+		box-sizing: border-box;
 	}
 	&__title{
 		margin-bottom: 40px;

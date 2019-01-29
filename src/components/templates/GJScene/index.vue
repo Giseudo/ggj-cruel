@@ -14,6 +14,7 @@
 						:son="son"
 						:daughter="daughter"
 						:gold="gold"
+						:dark="true"
 					/>
 				</transition>
 			</div>
@@ -129,12 +130,15 @@ export default {
 	&__status{
 	}
 	&__header{
-		min-height: 64px;
+		min-height: 124px;
 		margin: 10px;
 	}
 	&__notifications{
 		padding: 10px;
-		min-height: 52px;
+		position: absolute;
+		top: 90px;
+		left: 120px;
+		right: 0;
 	}
 	&__passage{
 		height: 70%;
@@ -147,12 +151,12 @@ export default {
 }
 
 .alert-enter{
-	transform: scale(1.05);
+	transform: translateX(30px);
 	opacity: 0;
 }
 
 .alert-leave-active{
-	transform: scale(.95);
+	transform: translateX(30px);
 	opacity: 0;
 }
 
@@ -172,7 +176,7 @@ export default {
 }
 
 // Status
-.status-enter-active, .passage-leave-active {
+.status-enter-active, .status-leave-active {
 	transition: all .3s $easeInOutQuad;
 }
 

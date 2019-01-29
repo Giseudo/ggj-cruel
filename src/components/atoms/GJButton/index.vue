@@ -48,7 +48,7 @@ export default {
 		border-radius: 4px;
 		background: linear-gradient(to bottom, transparent 0%, rgba(white, .3) 100%);
 		transition: .15s $easeInOutQuad;
-		opacity: 1;
+		opacity: 0;
 	}
 	&:hover,
 	&:focus{

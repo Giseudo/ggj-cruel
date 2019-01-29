@@ -46,6 +46,8 @@ export const initial = {
 export default {
 	namespaced: true,
 	state: {
+		start: true,
+		end: false,
 		gold: undefined,
 		orb: undefined,
 		dad: undefined,
@@ -73,6 +75,12 @@ export default {
 		},
 		getOrb(state) {
 			return state.orb
+		},
+		getStart(state) {
+			return state.start
+		},
+		getEnd(state) {
+			return state.end
 		}
 	},
 
@@ -115,15 +123,21 @@ export default {
 		},
 
 		gameover(state) {
-			store.commit('game/load')
+			state.end = true
+			store.commit('scene/setPassage', null)
+			// store.commit('game/load')
 		},
 
 		init(state) {
+			state.start = true
+			state.end = false
 			store.commit('game/load')
 		},
 
 		load(state) {
 			let data = state.memory
+
+			state.end = false
 
 			if (!data)
 				return store.commit('game/reset')
@@ -156,7 +170,7 @@ export default {
 			}
 
 			store.commit('notification/add', {
-				sprite: 'dagger',
+				sprite: 'letter',
 				message: 'Progresso salvo.'
 			})
 		},
@@ -165,6 +179,7 @@ export default {
 			let data = cloneDeep(initial)
 
 			state.memory = null
+			state.end = false
 
 			Vue.set(state, 'gold', data.gold)
 			Vue.set(state, 'orb', data.orb)
@@ -176,6 +191,10 @@ export default {
 
 			// Back to home screen
 			store.commit('scene/setScene', data.scene)
+		},
+
+		setOrb(state, payload = true) {
+			state.orb = payload
 		}
 	},
 
