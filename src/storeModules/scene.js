@@ -38,19 +38,21 @@ export default {
 
 		setPassage(state, payload) {
 			let scene = state.scenes[state.current],
-				passage = scene.passages[state.passage]
+				passage = scene.passages[state.passage],
+				next = payload,
+				previous = state.passage
 
 			// Exit callback
 			if (passage && passage.exit)
-				passage.exit() // TODO Pass game data
+				passage.exit(next) // TODO Pass game data
 
 			// Update passage
-			state.passage = payload
+			state.passage = next
 			passage = scene.passages[state.passage]
 
 			// Init callback
 			if (passage && passage.init)
-				passage.init() // TODO Pass game data
+				passage.init(previous) // TODO Pass game data
 		},
 
 		setScene(state, payload) {

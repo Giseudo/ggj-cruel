@@ -53,6 +53,15 @@ export default {
 html, body{
 	height: 100%;
 	overflow: hidden;
+	background: darken($c-darkred, 15%);
+}
+
+body{
+	@include grid-media($desktop-grid) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 .gj-app{
@@ -62,6 +71,7 @@ html, body{
 	display: flex;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 	&__continue{
 		position: absolute;
 		top: 0;
@@ -69,6 +79,11 @@ html, body{
 		right: 0;
 		bottom: 0;
 		z-index: 20;
+	}
+
+	@include grid-media($desktop-grid) {
+		width: 375px;
+		height: 667px;
 	}
 }
 
@@ -78,12 +93,12 @@ html, body{
 }
 
 .continue-enter{
-	transform: scale(1.1);
+	transform: scale(0.9);
 	opacity: 0;
 }
 
 .continue-leave-active{
-	transform: scale(0.9);
+	transform: scale(1.1);
 	opacity: 0;
 }
 </style>

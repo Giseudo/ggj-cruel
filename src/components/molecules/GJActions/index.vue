@@ -2,6 +2,7 @@
 	<div class="gj-actions">
 		<div class="gj-actions__option"
 			v-for="(option, index) in options"
+			v-if="!option.conditions || option.conditions() == true"
 			@click="option.callback"
 		>
 			<div class="gj-actions__prefix">
@@ -9,6 +10,13 @@
 					v-if="option.type == 'cast'"
 					class="gj-actions__sprite"
 					name="wand"
+					size="sm"
+				/>
+
+				<gj-sprite
+					v-if="option.type == 'orb'"
+					class="gj-actions__sprite"
+					name="orb"
 					size="sm"
 				/>
 
@@ -85,7 +93,7 @@ export default {
 		getTheme(type) {
 			if (type == 'cast')
 				return 'primary'
-			else if (type == 'buy')
+			else if (type == 'buy' || type == 'orb')
 				return 'warn'
 			else
 				return 'default'

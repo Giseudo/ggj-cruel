@@ -13,6 +13,7 @@
 		<transition-group name="parent" class="gj-status__container">
 			<gj-health
 				v-if="mom && !mom.hide"
+				class="gj-status__mom"
 				size="sm"
 				:key="0"
 				:image="mom.avatar"
@@ -21,6 +22,7 @@
 			/>
 			<gj-health
 				v-if="son && !son.hide"
+				class="gj-status__son"
 				size="sm"
 				:key="1"
 				:image="son.avatar"
@@ -29,6 +31,7 @@
 			/>
 			<gj-health
 				v-if="daughter && !daughter.hide"
+				class="gj-status__daughter"
 				size="sm"
 				:key="2"
 				:image="daughter.avatar"
@@ -123,19 +126,19 @@ export default {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			&:nth-child(1){
-				transform: translate(-120%, 135%) scale(1);
-			}
-			&:nth-child(2){
-				transform: translate(0%, 135%) scale(1);
-			}
-			&:nth-child(3){
-				transform: translate(100%, 70%) scale(1);
-			}
 		}
 	}
 	&__gold{
 		margin-left: 10px;
+	}
+	&__mom{
+		transform: translate(-120%, 135%) scale(1);
+	}
+	&__son{
+		transform: translate(0%, 135%) scale(1);
+	}
+	&__daughter{
+		transform: translate(100%, 70%) scale(1);
 	}
 }
 

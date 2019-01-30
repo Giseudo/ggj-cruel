@@ -149,7 +149,6 @@ export default {
 	}
 	&__health,
 	&__mana{
-		height: 12px;
 		transform: skew(-45deg);
 		background: $c-darkred;
 		span{
@@ -161,12 +160,14 @@ export default {
 	}
 	&__health{
 		width: 100%;
+		height: 12px;
 		margin-bottom: 5px;
 		span{
 			background: $c-green;
 		}
 	}
 	&__mana{
+		height: 8px;
 		width: 80%;
 		span{
 			background: $c-blue;

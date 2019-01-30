@@ -81,7 +81,9 @@ export default {
 		},
 		dad: {
 			type: Object,
-			default: undefined
+			default: () => ({
+				hide: false
+			})
 		},
 		mom: {
 			type: Object,

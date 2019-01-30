@@ -155,6 +155,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 		flex: 1;
 		position: relative;
 		background: rgba(black, .4);
+		cursor: pointer;
 	}
 	&__body{
 		box-sizing: border-box;

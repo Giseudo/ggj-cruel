@@ -118,7 +118,28 @@ export default {
 		},
 
 		show(state, character) {
+			if (character == 'all') {
+				store.commit('notification/add', {
+					sprite: 'letter',
+					message: 'Você está carregando seu lar.'
+				})
+
+				Vue.set('mom', 'hide', false)
+				Vue.set('son', 'hide', false)
+				Vue.set('daughter', 'hide', false)
+
+				return
+			}
+
 			Vue.set(state[character], 'hide', false)
+
+			if (character == 'dad')
+				return
+
+			store.commit('notification/add', {
+				sprite: 'letter',
+				message: state[character].name + ' juntou-se a você.'
+			})
 		},
 
 		hide(state, character) {
@@ -128,7 +149,6 @@ export default {
 		gameover(state) {
 			state.end = true
 			store.commit('scene/setPassage', null)
-			// store.commit('game/load')
 		},
 
 		init(state) {
@@ -197,6 +217,12 @@ export default {
 		},
 
 		setOrb(state, payload = true) {
+			if (payload)
+				store.commit('notification/add', {
+					sprite: 'orb',
+					message: 'Você obteve o Orbe Azul.'
+				})
+
 			state.orb = payload
 		}
 	},
@@ -210,6 +236,11 @@ export default {
 					Vue.set(state.dad.mana, 0, mana - amount)
 					resolve(state.dad.mana)
 				} else {
+					store.commit('notification/add', {
+						sprite: 'wand',
+						message: 'Você não tem mana suficiente!'
+					})
+
 					reject(state.dad.mana)
 				}
 			})

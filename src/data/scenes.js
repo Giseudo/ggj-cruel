@@ -9,7 +9,7 @@ export default (store) => {
 			init: () => {
 				store.commit('scene/setBackground', require('@/assets/images/bgs/village-01.jpg'))
 
-				// Show status
+				// HIDEME Show status
 				// store.commit('game/show', 'dad')
 
 				setTimeout(() =>
@@ -53,10 +53,14 @@ Thomas vai ao encontro de Almir assim que recebe o recado. Chegando lá se depar
 					text: `
 Então Thomas volta para casa correndo para tentar salvar sua família a tempo, na noite escura o suor frio cai pela sua testa, enquanto você desliza pelas vielas pegando o máximo de atalhos.
 					`,
-					next: () => store.commit('scene/setPassage', '0.4')
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '0.4'), 1000)
+					}
 				},
 
 				'0.4': {
+					first: true,
 					text: `
 Já é quase noite quando você chega em sua casa ofegante, escancarando a porta. Sua esposa Judith se levanta da cadeira sobressaltada, seus filhos comem a sopa e também arregalam os olhos ao te ver chegar daquele jeito. Judith derruba a sopa quente nos próprios pés.
 					`,
@@ -278,12 +282,13 @@ Mas e você o que vai fazer?
 						},
 						{
 							label: 'Ficar e lutar',
-							callback: () => store.commit('scene/setPassage', '29')
+							callback: () => store.commit('scene/setPassage', '25')
 						},
 					]
 				},
 
 				'4': {
+					first: true,
 					text: `
 Você caminha até a cozinha ignorando as reclamações de sua mulher, mas pode ver por sobre os ombros ela se aproximar.
 					`,
@@ -299,12 +304,33 @@ Qual o problema? Pra que a pressa?
 				},
 
 				'4.2': {
+					name: dad.name,
 					text: `
-Não foi nada querida, só…” você aponta para os sapatos sujos, a luz de um único lampião fica impossível discernir se aquilo é sangue ou lama. “Pisei em uma poça de porcos enquanto voltava para casa
+Não foi nada querida, só...
+					`,
+					next: () => store.commit('scene/setPassage', '4.2.1'),
+				},
 
+				'4.2.1': {
+					text: `
+Você aponta para os sapatos sujos, a luz de um único lampião fica impossível discernir se aquilo é sangue ou lama.
+					`,
+					next: () => store.commit('scene/setPassage', '4.2.2')
+				},
+
+				'4.2.2': {
+					name: dad.name,
+					text: `
+Pisei em uma poça de porcos enquanto voltava para casa.
+					`,
+					next: () => store.commit('scene/setPassage', '4.2.3')
+				},
+
+				'4.2.3': {
+					text: `
 Sua esposa caminha até um cômodo a sua esquerda, pega uma escova, um balde e o entrega batendo em seu peito com eles.
 					`,
-					next: () => store.commit('scene/setPassage', '4.3'),
+					next: () => store.commit('scene/setPassage', '4.3')
 				},
 
 				'4.3': {
@@ -319,10 +345,14 @@ Isso não é motivo para entrar assim mocinho!
 					text: `
 Judith nota suas mãos tremendo ao segurar o balde e te olha de maneira inquisidora.
 					`,
-					next: () => store.commit('scene/setPassage', '4.5'),
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '4.5'), 1000)
+					}
 				},
 
 				'4.5': {
+					name: mom.name,
 					text: `
 Vamos lá, fala logo o que está acontecendo.
 					`,
@@ -397,13 +427,7 @@ Você caminha até o porão, desce as escadas e destranca a porta enquanto sua m
 				},
 
 				'6.2': {
-					exit: () => {
-						store.commit('notification/add', {
-							sprite: 'orb',
-							message: 'Você obteve um Orbe Azul.'
-						})
-						store.commit('game/setOrb', true)
-					},
+					exit: () => store.commit('game/setOrb', true),
 					text: `
 Você fala e estala a língua, uma luz acende todo o cômodo, em um dos cantos um pequeno baú roxo emana uma aura azulada. Você abre o baú e pega o que tem dentro, um orbe azul opaco do tamanho de uma cabeça de gato. Você guarda o orbe em uma bolsa e volta para ver como sua esposa está.
 					`,
@@ -538,6 +562,75 @@ O papel diz:
 							callback: () => store.commit('scene/setPassage', '17')
 						},
 					]
+				},
+
+				'15': {
+					init: () => {
+						// TODO Add some sound effects here
+					},
+					text: `
+Um raio é lançado para o alto e depois de alguns segundos cai em cima de um dos soldados. O soldado cai imóvel no chão.
+					`,
+					next: () => store.commit('scene/setPassage', '15.1')
+				},
+
+				'15.1': {
+					text: `
+O líder dos homens faz um gesto para que ataquem e eles partem para cima de você ainda relutantes. Um por um os homens caem atingidos pelos raios conjurados do céu. Um raio é lançado no líder deles, mas ele se protege com uma barreira mágica. Você o reconhece: seu nome Rauin, o inquisidor do rei. Um mago que presta vassalagem a família Bavarosa a décadas.
+					`,
+					next: () => store.commit('scene/setPassage', '15.2')
+				},
+
+				'15.3': {
+					text: `
+Rauin da meia volta no cavalo, protegido por uma bolha mágica ele galopa em direção ao castelo do rei Bavarosa. De uma coisa você tem certeza, na próxima vez ele vai vir mais preparado.
+					`,
+					next: () => store.commit('scene/setPassage', '15.4')
+				},
+
+				'15.4': {
+					text: `
+Você volta para casa e conta todo o ocorrido a sua esposa.
+					`,
+					next: () => store.commit('scene/setPassage', '15.5')
+				},
+
+				'15.5': {
+					name: dad.name,
+					text: `
+Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos contratados por um homem que encomendou uma magia de conjuração do nível mais elevado, o homem jurou que não tinha assuntos no reino e pagou com seu peso em ouro. Então fizemos um pergaminho conjuratório para ele, uma magia infernal que traz uma onda de fogo.
+					`,
+					next: () => store.commit('scene/setPassage', '15.6')
+				},
+
+				'15.6': {
+					name: mom.name,
+					text: `
+Pelos Deuses, tem algo a ver com a queda da torre leste?
+					`,
+					next: () => store.commit('scene/setPassage', '15.7')
+				},
+
+				'15.7': {
+					name: dad.name,
+					text: `
+Exatamente... Eu não sabia que ele era um rebelde, não teria me envolvido se soubesse. Mas o rei não vai acreditar em mim, ainda mais depois do que eu fiz.
+					`,
+					next: () => store.commit('scene/setPassage', '15.8')
+				},
+
+				'15.8': {
+					text: `
+Judith não esconde o espanto quando você conta sobre o que fez no desfiladeiro, matando seis guardas.
+					`,
+					next: () => store.commit('scene/setPassage', '15.9')
+				},
+
+				'15.9': {
+					text: `
+Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar aqui com um exército ou coisa pior, venha. Temos que ir pela **floresta**.
+					`,
+					next: () => store.commit('scene/setPassage', '9')
 				},
 
 				'16': {
@@ -785,10 +878,6 @@ Se vai lutar eu também vou!
 					`,
 					next: () => {
 						store.commit('scene/setPassage', '25.1.1')
-						store.commit('notification/add', {
-							sprite: 'letter',
-							message: mom.name + ' juntou-se a você.'
-						})
 						store.commit('game/show', 'mom')
 					}
 				},
@@ -935,16 +1024,9 @@ O papel diz:
 						{
 							label: 'Usar escudo arcano',
 							type: 'cast',
-							cost: 30,
 							callback: () => {
 								store.dispatch('game/cast', 30)
-									.then(
-										() => store.commit('scene/setPassage', '28'),
-										() => store.commit('notification/add', {
-											sprite: 'orb',
-											message: 'Você não tem mana suficiente!'
-										})
-									)
+									.then(() => store.commit('scene/setPassage', '28'))
 							}
 						}
 					]
@@ -967,7 +1049,611 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Uma tora de madeira crepitante cai  em cima de sua perna, você desenha um círculo ao seu redor com o cajado, fecha os olhos e chora, enquanto seu lar é destruído. Mesmo com o escudo arcano você sofre queimaduras no corpo todo e é esmagado pelos destroços. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
 					`,
 					next: () => store.commit('game/gameover')
-				}
+				},
+
+				'30': {
+					name: dad.name,
+					text: `
+Você tem razão, é melhor arriscarmos. Me ajude com as crianças. Nós vamos fugir.
+					`,
+					next: () => store.commit('scene/setPassage', '30.1')
+				},
+
+				'30.1': {
+					text: `
+Você e Judith pegam as crianças e correm pela porta dos fundos.
+					`,
+					next: () => store.commit('scene/setPassage', '30.2')
+				},
+
+				'30.2': {
+					text: `
+Sua filha de dez anos Rehla segura uma boneca de palha e uma bolsa de pano, seu filho Jedah traz uma espada curta na cintura. O garoto tem treze anos de idade e apesar da intenção não sabe manusear a arma. Você toma a espada para si e entrega um machado para ele.
+					`,
+					next: () => store.commit('scene/setPassage', '30.3')
+				},
+
+				'30.3': {
+					name: dad.name,
+					text: `
+Talvez outra hora garoto, por enquanto tome com esse machado e fique por perto
+					`,
+					next: () => store.commit('scene/setPassage', '30.4')
+				},
+
+				'30.5': {
+					text: `
+Você, Judith e as crianças saem pela porta dos fundos, ao levantar-se nota um grupo de meia dúzia de soldados do rei vindo na direção de sua casa.
+					`,
+					next: () => store.commit('scene/setPassage', '30.6')
+				},
+
+				'30.6': {
+					text: `
+As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo matagal que vai até a floresta Germonde. Contudo é noite e a floresta também representa um perigo real.
+					`,
+					actions: [
+						{
+							label: 'Ir pela estrada',
+							callback: () => store.commit('scene/setPassage', '8')
+						},
+						{
+							label: 'Correr para floresta',
+							callback: () => store.commit('scene/setPassage', '9')
+						},
+					]
+				},
+
+				'31': {
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '31'), 1000)
+						}
+					},
+					name: dad.name,
+					text: `
+Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos contratados por um homem que encomendou uma magia de conjuração do nível mais elevado, o homem jurou que não tinha assuntos no reino e pagou com seu peso em ouro. Então fizemos um pergaminho conjuratório para ele, uma magia infernal que traz uma onda de fogo.
+					`,
+					next: () => store.commit('scene/setPassage', '31.1')
+				},
+
+				'31.1': {
+					name: mom.name,
+					text: `
+Pelos Deuses, tem algo a ver com aquele ataque terrorista que aconteceu na torre leste?
+					`,
+					next: () => store.commit('scene/setPassage', '31.2')
+				},
+
+				'31.2': {
+					name: dad.name,
+					text: `
+Exatamente... Eu não sabia que era um rebelde, não teria me envolvido se soubesse. Mas o rei não vai acreditar em mim, precisamos dar o fora daqui imediatamente.
+					`,
+					next: () => store.commit('scene/setPassage', '31.3')
+				},
+
+				'31.3': {
+					text: `
+Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arruma suas coisas.
+					`,
+					next: () => store.commit('scene/setPassage', '5')
+				},
+
+				'32': {
+					first: true,
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '32'), 1000)
+						}
+					},
+					text: `
+Você puxa sua Judith até um canto da sala e tenta explicar a situação.
+					`,
+					next: () => store.commit('scene/setPassage', '32.1')
+				},
+
+				'32.1': {
+					name: dad.name,
+					text: `
+Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos contratados por um homem que encomendou uma magia de conjuração do nível mais elevado, o homem jurou que não tinha assuntos no reino e pagou com seu peso em ouro. Então fizemos um pergaminho conjuratório para ele, uma magia infernal que traz uma onda de fogo.
+					`,
+					next: () => store.commit('scene/setPassage', '32.2')
+				},
+
+				'32.2': {
+					name: mom.name,
+					text: `
+Pelos Deuses, tem algo a ver com a queda da torre leste?
+					`,
+					next: () => store.commit('scene/setPassage', '32.3')
+				},
+
+				'32.3': {
+					name: dad.name,
+					text: `
+Exatamente... Eu não sabia que era um rebelde, não teria me envolvido se soubesse. Mas o rei não vai acreditar em mim, precisamos dar o fora daqui imediatamente.
+					`,
+					next: () => store.commit('scene/setPassage', '32.4')
+				},
+
+				'32.4': {
+					text: `
+Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arruma suas coisas.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '5'), 1000)
+					}
+				},
+
+				'33': {
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '33'), 1000)
+						}
+					},
+					name: dad.name,
+					text: `
+É o trabalho, um contratante deu calote em mim e no Almir.
+					`,
+					next: () => store.commit('scene/setPassage', '33.1')
+				},
+
+				'33.1': {
+					name: mom.name,
+					text: `
+Mais uma vez te passaram a perna? Que novidade hein, você deveria desconfiar mais das pessoas depois disso acontecer tantas vezes.
+					`,
+					next: () => store.commit('scene/setPassage', '33.2')
+				},
+
+				'33.2': {
+					text: `
+Judith voltou para mesa com as crianças e conversava distraída, enquanto isso você limpava as botas e pensava em uma forma de sair daquela situação. Almir morreu, a segurança de sua família é sua prioridade.					
+					`,
+					next: () => store.commit('scene/setPassage', '33.3')
+				},
+
+				'33.3': {
+					exit: () => store.commit('game/setOrb', true),
+					text: `
+Após limpar todo o sangue você caminha até o porão e pega um orbe azulado e opaco, do tamanho da cabeça de um gato.
+					`,
+					next: () => store.commit('scene/setPassage', '33.4')
+				},
+
+				'33.4': {
+					name: mom.name,
+					text: `
+O que você vai fazer com isso?
+					`,
+					next: () => store.commit('scene/setPassage', '33.5')
+				},
+
+				'33.5': {
+					name: dad.name,
+					text: `
+Estou indo resolver um problema, tranque as portas e não abra pra ninguém.
+					`,
+					next: () => store.commit('scene/setPassage', '33.6')
+				},
+
+				'33.6': {
+					text: `
+Você acopla o orbe na ponta de seu cajado e sai de casa a passos largos, deixando para trás sua mulher e seus filhos atordoados.
+					`,
+					actions: [
+						{
+							label: 'Ir pela estrada sozinho',
+							callback: () => store.commit('scene/setPassage', '34')
+						},
+						{
+							label: 'Voltar para casa',
+							callback: () => store.commit('scene/setPassage', '35')
+						}
+					]
+				},
+
+				'34': {
+					first: true,
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '34'), 1000)
+						}
+					},
+					text: `
+Você sente o ar se condensar enquanto respira, coloca o capuz e escuta um agrupamento de soldados descendo a estrada.
+					`,
+					actions: [
+						{
+							label: 'Atacar sozinho com o Orbe',
+							type: 'cast',
+							conditions: () => store.state.game.orb,
+							callback: () => store.dispatch('game/cast', 30)
+								.then(() => store.commit('scene/setPassage', '36'))
+						},
+						{
+							label: 'Negociar com o Orbe',
+							type: 'orb',
+							conditions: () => store.state.game.orb,
+							callback: () => store.commit('scene/setPassage', '38')
+						},
+						{
+							label: 'Esconder-se',
+							callback: () => store.commit('scene/setPassage', '37')
+						},
+					]
+				},
+
+				'35': {
+					text: `
+No meio do caminho você pensa melhor e percebe que é perigoso demais deixar sua família sozinha, então volta e conta toda a verdade a Judith
+					`,
+					next: () => store.commit('scene/setPassage', '35.1')
+				},
+
+				'35.1': {
+					init: () => {
+						store.commit('game/show', 'dad')
+					},
+					text: `
+Você puxa sua Judith até um canto da sala e tenta explicar a situação.
+					`,
+					next: () => store.commit('scene/setPassage', '35.2')
+				},
+
+				'35.2': {
+					name: dad.name,
+					text: `
+Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos contratados por um homem que encomendou uma magia de conjuração do nível mais elevado, o homem jurou que não tinha assuntos no reino e pagou com seu peso em ouro. Então fizemos um pergaminho conjuratório para ele, uma magia infernal que traz uma onda de fogo.
+					`,
+					next: () => store.commit('scene/setPassage', '35.3')
+				},
+
+				'35.3': {
+					name: mom.name,
+					text: `
+Pelos Deuses, tem algo a ver com aquele ataque terrorista que aconteceu na torre leste?
+					`,
+					next: () => store.commit('scene/setPassage', '35.4')
+				},
+
+				'35.4': {
+					name: dad.name,
+					text: `
+Exatamente... Eu não sabia que era um rebelde, não teria me envolvido se soubesse. Mas o rei não vai acreditar em mim, precisamos dar o fora daqui imediatamente.
+					`,
+					next: () => store.commit('scene/setPassage', '35.5')
+				},
+
+				'35.5': {
+					text: `
+Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arruma suas coisas.
+					`,
+					next: () => store.commit('scene/setPassage', '5')
+				},
+
+				'36': {
+					text: `
+Você segura firme o cajado e murmura uma conjuração em voz baixa. Uma luz azulada envolve você em um círculo e o orbe flutua em cima do seu cajado. Os soldados ficam paralisados enquanto raios crepitam em volta de você.
+					`,
+					next: () => {
+						// TODO Implement test
+						if (true)
+							store.commit('scene/setPassage', '15')
+						else
+							store.commit('scene/setPassage', '39')
+					}
+				},
+
+				'37': {
+					text: `
+Você percebe que os soldados são liderados pelo inquisidor Rauin. Um mago que presta vassalagem a família Bavarosa a décadas. Pelo caminho que ele e os soldados tomam você percebe que eles chegarão em breve em sua casa.
+					`,
+					actions: [
+						{
+							label: 'Atacar',
+							callback: () => store.commit('scene/setPassage', '70')
+						},
+						{
+							label: 'Correr para casa',
+							callback: () => store.commit('scene/setPassage', '71')
+						}
+					]
+				},
+
+				'38': {
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '38'), 1000)
+						}
+					},
+					name: dad.name,
+					text: `
+Vossa excelência Rauin, sei por que você veio e tenho algo que talvez possa te interessar!
+					`,
+					next: () => store.commit('scene/setPassage', '38.1.1')
+				},
+
+				'38.1.1': {
+					text: `
+Você grita, retirando o capuz, levanta as mãos lentamente e começa a pegar sua bolsa.
+					`,
+					next: () => store.commit('scene/setPassage', '38.1')
+				},
+
+				'38.1': {
+					text: `
+Você tira o orbe azul de sua bolsa e apresenta ao homem. Rauin fita o objeto por alguns instantes e balança a cabeça positivamente.
+					`,
+					next: () => store.commit('scene/setPassage', '38.2')
+				},
+
+				'38.2': {
+					name: dad.name,
+					text: `
+Poupe minha vida e da minha família e o artefato é seu.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '38.3'), 1000)
+					}
+				},
+
+				'38.3': {
+					name: 'Rauin',
+					text: `
+Muito bem, passe para cá e pode ir embora da cidade. Vou fingir que não te vi, mas preciso queimar sua casa. As ordens do rei são para que eu queime você junto, mas pelo orbe posso fazer vista grossa.
+					`,
+					next: () => store.commit('scene/setPassage', '38.4')
+				},
+
+				'38.4': {
+					name: dad.name,
+					text: `
+Mas e os soldados? Que garantia eu tenho de que não vão me atacar assim que eu entregar o orbe?
+					`,
+					next: () => store.commit('scene/setPassage', '38.5')
+				},
+
+				'38.5': {
+					name: 'Rauin',
+					text: `
+Os soldados são minha guarda pessoal e não do rei, farão o que eu mandar. Não é mesmo homens?
+					`,
+					next: () => store.commit('scene/setPassage', '38.7')
+				},
+
+				'38.7': {
+					text: `
+Os soldados respondem em uníssono "Sim senhor!"
+					`,
+					next: () => store.commit('scene/setPassage', '38.9')
+				},
+
+				'38.9': {
+					name: 'Rauin',
+					text: `
+Abaixem as armas!
+					`,
+					next: () => store.commit('scene/setPassage', '38.10')
+				},
+
+				'38.10': {
+					exit: () => {
+						store.commit('notification/add', {
+							sprite: 'orb',
+							message: 'Você entregou o Orbe Azul para Rauin.'
+						})
+						store.commit('game/setOrb', false)
+					},
+					text: `
+Todos os seis soldados guardam as espadas e vão até o inquisidor, que estende a mão. Você entrega o orbe e caminha em direção a sua casa.
+					`,
+					next: () => store.commit('scene/setPassage', '38.11')
+				},
+
+				'38.11': {
+					text: `
+Rauin olha animado para o orbe e sorri, ele esporeia o cavalo em direção sua direção.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '38.12'), 1000)
+					}
+				},
+
+				'38.12': {
+					name: 'Rauin',
+					text: `
+Não fique na cidade, se mais alguem te ver por ai terei que ir atrás de você. E nenhum de nós dois vai querer isso, não é mesmo?
+					`,
+					next: () => store.commit('scene/setPassage', '38.13')
+				},
+
+				'38.13': {
+					name: dad.name,
+					text: `
+Certo, preciso pegar minha família. Obrigado.
+					`,
+					next: () => store.commit('scene/setPassage', '38.14')
+				},
+
+				'38.14': {
+					text: `
+Rauin nem olha mais para você, manuseia o orbe azul como se fosse uma criança com um brinquedo novo.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '38.15'), 1000)
+					}
+				},
+
+				'38.15': {
+					text: `
+Você corre até sua casa e conta tudo a Judith.
+					`,
+					next: () => store.commit('scene/setPassage', '38.16')
+				},
+
+				'38.16': {
+					name: dad.name,
+					text: `
+Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos contratados por um homem que encomendou uma magia de conjuração do nível mais elevado, o homem jurou que não tinha assuntos no reino e pagou com seu peso em ouro. Então fizemos um pergaminho conjuratório para ele, uma magia infernal que traz uma onda de fogo.
+					`,
+					next: () => store.commit('scene/setPassage', '38.17')
+				},
+
+				'38.17': {
+					name: mom.name,
+					text: `
+Pelos Deuses, tem algo a ver com a queda da torre leste?
+					`,
+					next: () => store.commit('scene/setPassage', '38.18')
+				},
+
+				'38.18': {
+					name: dad.name,
+					text: `
+Exatamente... Eu não sabia que ele era um rebelde, não teria me envolvido se soubesse. Mas o rei não acredita em mim, precisamos dar o fora daqui imediatamente.
+					`,
+					next: () => store.commit('scene/setPassage', '9')
+				},
+
+				'39': {
+					exit: () => {
+						// TODO Add some arrow bolt effect
+					},
+					text: `
+ Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e atacam, alguns são atingidos mas a maioria continua de pé. Rauin lança um ataque em conjunto com um arqueiro, meia dúzia de lâminas voam em sua direção. Você é acertado e sangra até a morte sozinho…
+					`,
+					next: () => store.commit('game/gameover')
+				},
+
+				'44': {
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '44'), 1000)
+						}
+					},
+					name: dad.name,
+					text: `
+Vossa excelência Rauin, sei por que você veio e tenho algo que talvez possa te interessar!
+					`,
+					next: () => store.commit('scene/setPassage', '44.1.1')
+				},
+
+				'44.1.1': {
+					text: `
+Você grita, retirando o capuz, levanta as mãos lentamente e começa a pegar sua bolsa.
+					`,
+					next: () => store.commit('scene/setPassage', '44.1')
+				},
+
+				'44.1': {
+					text: `
+Rauin levanta o cajado e todos os homens apontam as armas para você.
+
+Você tira o orbe azul de sua bolsa e apresenta ao homem. Rauin fita o objeto por alguns instantes e balança a cabeça positivamente.
+					`,
+					next: () => store.commit('scene/setPassage', '44.2')
+				},
+
+				'44.2': {
+					name: dad.name,
+					text: `
+Poupe minha vida e da minha família e o artefato é seu.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '44.3'), 1000)
+					}
+				},
+
+				'44.3': {
+					name: 'Rauin',
+					text: `
+Muito bem, passe para cá e pode ir embora da cidade. Vou fingir que não te vi, mas preciso queimar sua casa. As ordens do rei são para que eu queime você junto, mas pelo orbe posso fazer vista grossa.
+					`,
+					next: () => store.commit('scene/setPassage', '44.4')
+				},
+
+				'44.4': {
+					name: dad.name,
+					text: `
+Mas e os soldados? Que garantia eu tenho de que não vão me atacar assim que eu entregar o orbe?
+					`,
+					next: () => store.commit('scene/setPassage', '44.5')
+				},
+
+				'44.5': {
+					name: 'Rauin',
+					text: `
+Os soldados são minha guarda pessoal e não do rei, farão o que eu mandar. Não é mesmo homens?
+					`,
+					next: () => store.commit('scene/setPassage', '44.6')
+				},
+
+				'44.6': {
+					text: `
+Os soldados respondem em uníssono "Sim senhor!"
+					`,
+					next: () => store.commit('scene/setPassage', '44.7')
+				},
+
+				'44.7': {
+					name: 'Rauin',
+					text: `
+Abaixem as armas e se afastem dele e de sua família
+					`,
+					next: () => store.commit('scene/setPassage', '44.8')
+				},
+
+				'44.8': {
+					exit: () => {
+						store.commit('notification/add', {
+							sprite: 'orb',
+							message: 'Você entregou o Orbe Azul para Rauin.'
+						})
+						store.commit('game/setOrb', false)
+					},
+					text: `
+Todos os seis soldados guardam as espadas e vão até o inquisidor, que estende a mão. Você entrega o orbe e caminha até sua mulher ainda na defensiva.
+
+					`,
+					next: () => store.commit('scene/setPassage', '44.9')
+				},
+
+				'44.9': {
+					text: `
+Rauin olha animado para o orbe e sorri, ele esporeia o cavalo em direção sua direção.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '44.10'), 1000)
+					}
+				},
+
+				'44.10': {
+					name: 'Rauin',
+					text: `
+Não fique na cidade, se mais alguem te ver por ai terei que ir atrás de você. E nenhum de nós dois vai querer isso, não é mesmo?
+					`,
+					next: () => store.commit('scene/setPassage', '9')
+				},
 
 			}
 		},

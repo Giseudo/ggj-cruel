@@ -52,6 +52,7 @@ export default {
 	}
 	&--lead{
 		font-size: 46px;
+		font-family: Roboto Slab;
 	}
 
 	&.is-dark{
