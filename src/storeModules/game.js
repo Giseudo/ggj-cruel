@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import store from '@/store'
-import { cloneDeep } from 'lodash'
 
 export const initial = {
 	scene: 'cruel',
@@ -165,7 +164,7 @@ export default {
 			if (!data)
 				return store.commit('game/reset')
 
-			data = cloneDeep(data)
+			data = JSON.parse(JSON.stringify(data))
 
 			Vue.set(state, 'gold', data.gold)
 			Vue.set(state, 'orb', data.orb)
@@ -179,12 +178,12 @@ export default {
 		},
 
 		save(state) {
-			let data = cloneDeep(state)
+			let data = JSON.parse(JSON.stringify(state))
 
 			state.memory = {
 				gold: data.gold,
 				orb: data.orb,
-				dad: cloneDeep(data.dad, true),
+				dad: JSON.parse(JSON.stringify(data.dad)),
 				mom: data.mom,
 				son: data.son,
 				daughter: data.daughter,
@@ -199,7 +198,7 @@ export default {
 		},
 
 		reset(state) {
-			let data = cloneDeep(initial)
+			let data = JSON.parse(JSON.stringify(initial))
 
 			state.memory = null
 			state.end = false

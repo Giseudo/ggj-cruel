@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import store from '@/store'
-import { deepClone } from 'lodash'
 
 export default {
 	namespaced: true,
