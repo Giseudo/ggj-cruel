@@ -434,6 +434,124 @@ Você fala e estala a língua, uma luz acende todo o cômodo, em um dos cantos u
 					next: () => store.commit('scene/setPassage', '5'),
 				},
 
+				'7': {
+// TODO
+				},
+
+				'8': {
+					first: true,
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '8'), 1000)
+						}
+					},
+					text: `
+O vento gélido da noite causa arrepios e te eriça os pelos enquanto você caminha com sua família pela estrada.
+					`,
+					next: () => store.commit('scene/setPassage', '8.1')
+				},
+
+				'8.1': {
+					name: dad.name,
+					text: `
+Coloquem os capuzes, tentaremos passar despercebidos pelos guardas.
+					`,
+					next: () => store.commit('scene/setPassage', '8.2')
+				},
+
+				'8.2': {
+					text: `
+Você e sua família caminham de cabeça baixa, a estrada é uma só e o encontro é inevitável. Os seis guardas passam por você e sua família, você se sente aliviado. Até ver um outro homem vindo a cavalo e olhando diretamente para você.
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+
+						setTimeout(() => store.commit('scene/setPassage', '8.3'), 1000)
+					}
+				},
+
+				'8.3': {
+					name: 'Rauin',
+					text: `
+Alto lá!
+					`,
+					next: () => store.commit('scene/setPassage', '8.4')
+				},
+				
+				'8.4': {
+					text: `
+Você reconhece o homem, seu nome Rauin, o inquisidor do rei. Um mago que presta vassalagem a família Bavarosa a décadas. Os guardas atrás de você retiram as espadas de suas bainhas e Rauin se aproxima a galope com um cetro místico em uma das mãos.
+					`,
+					next: () => store.commit('scene/setPassage', '8.5')
+				},
+
+				'8.5': {
+					name: 'Rauin',
+					text: `
+Você! Retire o capuz!
+					`,
+					actions: [
+						{
+							label: 'Tirar o capuz',
+							callback: () => store.commit('scene/setPassage', '7')
+						},
+						{
+							label: 'Atacar com o Orbe Azul',
+							type: 'orb',
+							conditions: () => store.state.game.orb,
+							callback: () => store.commit('scene/setPassage', '10')
+						},
+						{
+							label: 'Atacar',
+							type: 'cast',
+							conditions: () => !store.state.game.orb,
+							callback: () => {
+								store.dispatch('game/cast', 30)
+									.then(() => store.commit('scene/setPassage', '61'))
+							}
+						},
+						{
+							label: 'Fugir',
+							callback: () => {
+								if (store.state.game.orb)
+									store.commit('scene/setPassage', '11')
+								else
+									store.commit('scene/setPassage', '61')
+							}
+						}
+					]
+				},
+
+				'11': {
+					name: dad.name,
+					text: `
+Fujam!
+					`,
+					next: () => store.commit('scene/setPassage', '11.1')
+				},
+
+				'11.1': {
+					text: `
+Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você se esquiva da primeira investida de um dos guardas, conjura uma magia telecinética e lança o corpo de um dos guardas nos perseguidores de sua família.
+					`,
+					next: () => store.commit('scene/setPassage', '11.2')
+				},
+
+				'11.2': {
+					text: `
+Você corre para alcançá-los enquanto eles entram na escura floresta de Germond.
+					`,
+					next: () => {
+						// TODO Do the test
+						if (true)
+							store.commit('scene/setPassage', '9')
+						else
+							store.commit('scene/setPassage', '41')
+					}
+				},
+
 				'13': {
 					name: dad.name,
 					text: `
@@ -558,8 +676,10 @@ O papel diz:
 						{
 							label: 'Usar escudo arcano',
 							type: 'cast',
-							cost: 30,
-							callback: () => store.commit('scene/setPassage', '17')
+							callback: () => {
+								store.dispatch('game/cast', 30)
+									.then(() => store.commit('scene/setPassage', '17'))
+							}
 						},
 					]
 				},
@@ -750,8 +870,10 @@ O papel diz:
 						{
 							label: 'Usar escudo arcano',
 							type: 'cast',
-							cost: 30,
-							callback: () => store.commit('scene/setPassage', '21')
+							callback: () => {
+								store.commit('game/cast', 30)
+									.then(() => store.commit('scene/setPassage', '21'))
+							}
 						},
 					]
 				},
@@ -1541,6 +1663,44 @@ Exatamente... Eu não sabia que ele era um rebelde, não teria me envolvido se s
 					next: () => store.commit('game/gameover')
 				},
 
+				'40': {
+					first: true,
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '40'), 1000)
+						}
+					},
+					text: `
+Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você se esquiva da primeira investida de um dos guardas, conjura uma magia telecinética e lança o corpo de um dos guardas nos perseguidores de sua família.
+					`,
+					next: () => store.commit('scene/setPassage', '40.1')
+				},
+
+				'40.1': {
+					text: `
+Você corre para alcançá-los enquanto eles entram na escura floresta de Germond.
+					`
+				},
+
+				'41': {
+					first: true,
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => {
+								store.commit('game/damage', { target: 'dad', amount: 100 })
+								store.commit('scene/setPassage', '41')
+							}, 1000)
+						}
+					},
+					text: `
+Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você é atingido na primeira investida por um dos guardas, os outros dois enchem seu corpo de flechas. Você morre sem saber se a sua família conseguiu escapar.
+					`
+				},
+
 				'44': {
 					init(previous) {
 						if (previous != null) {
@@ -1653,6 +1813,79 @@ Rauin olha animado para o orbe e sorri, ele esporeia o cavalo em direção sua d
 Não fique na cidade, se mais alguem te ver por ai terei que ir atrás de você. E nenhum de nós dois vai querer isso, não é mesmo?
 					`,
 					next: () => store.commit('scene/setPassage', '9')
+				},
+
+				'61': {
+					first: true,
+					init(previous) {
+						if (previous != null) {
+							store.commit('scene/setPassage', null)
+
+							setTimeout(() => store.commit('scene/setPassage', '61'), 1000)
+						}
+					},
+					text: `
+Você segura firme o cajado e murmura uma conjuração em voz baixa, sua família está assustada e as crianças se escondem atrás de Judith. Uma luz acinzentada envolve você em um círculo. Os soldados ficam paralisados enquanto raios crepitam em volta de você. 
+
+					`,
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '61.1'), 1000)
+					}
+				},
+
+				'61.1': {
+					name: 'Rauin',
+					text: `
+O que estão esperando?! Não deixem que ele termine a conjuração! Matem-no!
+					`,
+					next: () => store.commit('scene/setPassage', '61.2')
+				},
+
+				'61.2': {
+					text: `
+Três soldados partem para o ataque de uma vez.
+					`,
+					next: () => {
+						// TODO Do the test
+						if (true)
+							store.commit('scene/setPassage', '63')
+						else
+							store.commit('scene/setPassage', '64')
+					}
+				},
+				
+				'63': {
+					text: `
+Mas é tarde demais, você já terminou o murmúrio e um raio atravessa o peito dos três homens, você sente um cheiro forte de queimado quando os três homens tombam inertes no chão.
+					`,
+					actions: [
+						{
+							label: 'Ataque mágico',
+							type: 'cast',
+							callback: () =>
+								store.dispatch('game/cast', 30)
+									.then(() => store.commit('scene/setPassage', '65'))
+						},
+						{
+							label: 'Ataque normal',
+							callback: () => store.commit('scene/setPassage', '66')
+						},
+						{
+							label: 'Fugir',
+							callback: () => store.commit('scene/setPassage', '67')
+						}
+					]
+				},
+
+				'64': {
+					init: () => {
+						store.commit('game/damage', { target: 'dad', amount: 100 })
+					},
+					text: `
+Um raio é lançado de seu cajado na direção dos homens, mas não rápido o suficiente. Os três conseguem se esquivar e te atacam em conjunto. Os homens são guerreiros treinados e por mas que você consiga se defender dos primeiros golpes, é cortado por todos os lados e inevitavelmente sofre um ferimento fatal. Sua cabeça é cortada e rola morro abaixo, enquanto sua família grita horrorizada. 
+					`,
+					next: () => store.commit('game/gameover')
 				},
 
 			}
