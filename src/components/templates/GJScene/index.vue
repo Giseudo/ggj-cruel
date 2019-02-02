@@ -3,6 +3,16 @@
 		<div class="gj-scene__background" :style="{ backgroundImage: `url(${background})` }">
 		</div>
 
+		<transition name="previous">
+			<gj-previous
+				class="gj-scene__previous"
+				v-if="hasPrevious"
+				size="sm"
+				@click="$emit('previous')"
+			/>
+		</transition>
+
+
 		<div class="gj-scene__wrapper">
 			<div class="gj-scene__header">
 				<transition name="status">
@@ -48,6 +58,7 @@
 import GJStatus from '@/components/organisms/GJStatus'
 import GJPassage from '@/components/organisms/GJPassage'
 import GJAlert from '@/components/molecules/GJAlert'
+import GJPrevious from '@/components/atoms/GJPrevious'
 
 import { mapGetters } from 'vuex'
 
@@ -55,7 +66,8 @@ export default {
 	components: {
 		'gj-status': GJStatus,
 		'gj-passage': GJPassage,
-		'gj-alert': GJAlert
+		'gj-alert': GJAlert,
+		'gj-previous': GJPrevious
 	},
 
 	props: {
@@ -97,6 +109,10 @@ export default {
 			type: Object,
 			default: undefined
 		},
+		hasPrevious: {
+			type: Boolean,
+			default: true
+		}
 	},
 }
 </script>
@@ -130,6 +146,12 @@ export default {
 		background-position: center;
 		z-index: -2;
 	}
+	&__previous{
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		z-index: 30;
+	}
 	&__status{
 	}
 	&__header{
@@ -139,8 +161,8 @@ export default {
 	&__notifications{
 		padding: 10px;
 		position: absolute;
-		top: 90px;
-		left: 120px;
+		top: 140px;
+		left: 90px;
 		right: 0;
 	}
 	&__passage{
@@ -191,4 +213,14 @@ export default {
 	transform: translateY(-100%);
 }
 
+// Previous
+.previous-enter-active, .previous-leave-active {
+	transition: all .3s $easeInOutQuad;
+}
+
+.previous-enter,
+.previous-leave-active{
+	transform: translate(-100%, 100%);
+	opacity: 0;
+}
 </style>

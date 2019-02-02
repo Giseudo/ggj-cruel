@@ -10,6 +10,8 @@
 		:background="background"
 		:passage="passage"
 		:notification="notification"
+		:has-previous="history.length > 0"
+		@previous="$store.commit('scene/previous')"
 	>
 	</gj-scene>
 </template>
@@ -48,9 +50,10 @@ export default {
 			daughter: 'game/getDaughter',
 			gold: 'game/getGold',
 			passage: 'scene/getPassage',
+			history: 'scene/getHistory',
 			scene: 'scene/getCurrent',
 			background: 'scene/getBackground',
-			notification: 'notification/getCurrent'
+			notification: 'notification/getCurrent',
 		})
 	}
 }

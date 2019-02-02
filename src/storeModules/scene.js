@@ -6,7 +6,7 @@ export default {
 	state: {
 		scenes: null,
 		current: null,
-		previous: null,
+		history: [],
 		passage: null,
 		previousPassage: null,
 		background: null
@@ -28,10 +28,25 @@ export default {
 				return scene.passages[state.passage]
 			else
 				return null
+		},
+
+		getHistory(state) {
+			return state.history
 		}
 	},
 
 	mutations: {
+		previous(state) {
+			state.passage = state.history.pop()
+
+			if (state.passage.init)
+				passage.init(state.history[state.history.length - 1])
+		},
+
+		resetHistory(state) {
+			state.history = []
+		},
+
 		setBackground(state, payload) {
 			return state.background = payload
 		},
@@ -41,6 +56,10 @@ export default {
 				passage = scene.passages[state.passage],
 				next = payload,
 				previous = state.passage
+
+			// Update previous if its not null
+			if (previous)
+				state.history.push(previous)
 
 			// Exit callback
 			if (passage && passage.exit)
