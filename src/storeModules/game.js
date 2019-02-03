@@ -14,6 +14,8 @@ export const initial = {
 		mana: [100, 100],
 		arcane: 10,
 		hide: true,
+		chased: false,
+		negotiated: false,
 		dead: false
 	},
 
@@ -80,6 +82,12 @@ export default {
 		},
 		getEnd(state) {
 			return state.end
+		},
+		getChased(state) {
+			return state.dad.chased
+		},
+		getNegotiated(state) {
+			return state.dad.negotiated
 		}
 	},
 
@@ -118,27 +126,14 @@ export default {
 
 		show(state, character) {
 			if (character == 'all') {
-				store.commit('notification/add', {
-					sprite: 'letter',
-					message: 'Você está carregando seu lar.'
-				})
-
-				Vue.set('mom', 'hide', false)
-				Vue.set('son', 'hide', false)
-				Vue.set('daughter', 'hide', false)
+				Vue.set(state.mom, 'hide', false)
+				Vue.set(state.son, 'hide', false)
+				Vue.set(state.daughter, 'hide', false)
 
 				return
 			}
 
 			Vue.set(state[character], 'hide', false)
-
-			if (character == 'dad')
-				return
-
-			store.commit('notification/add', {
-				sprite: 'letter',
-				message: state[character].name + ' juntou-se a você.'
-			})
 		},
 
 		hide(state, character) {
@@ -223,6 +218,24 @@ export default {
 				})
 
 			state.orb = payload
+		},
+
+		negotiate(state) {
+			store.commit('notification/add', {
+				sprite: 'orb',
+				message: 'Você entregou o Orbe Azul para Rauin.'
+			})
+
+			store.commit('game/setOrb', false)
+			Vue.set(state.dad, 'negotiated', true)
+		},
+
+		chase(state) {
+			Vue.set(state.dad, 'chased', true)
+		},
+
+		setMana(state, amount) {
+			Vue.set(state.dad.mana, 0, amount)
 		}
 	},
 

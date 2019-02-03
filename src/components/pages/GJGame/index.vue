@@ -1,6 +1,7 @@
 <template>
 	<gj-scene class="gj-game"
 		v-if="scene"
+		:debug="true"
 		:status="status"
 		:dad="dad"
 		:mom="mom"
@@ -26,7 +27,15 @@ export default {
 	beforeRouteEnter(to, from, next) {
 		Vue.nextTick(() => {
 			store.dispatch('scene/fetch')
-				.then(next)
+				.then(next(vm => {
+					store.commit('scene/setScene', 'cruel')
+
+					// Debug mode
+					if (to.params.passage) {
+						store.commit('scene/setInitial', to.params.passage)
+						store.commit('game/show', 'dad')
+					}
+				}))
 		})
 	},
 
@@ -35,12 +44,8 @@ export default {
 	},
 
 	data: () => ({
-		status: false,
+		status: false
 	}),
-
-	mounted() {
-		this.$store.commit('scene/setScene', 'cruel')
-	},
 
 	computed: {
 		dad: function () { return this.$store.state.game.dad },

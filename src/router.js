@@ -12,6 +12,11 @@ export default new Router({
 			path: '',
 			name: 'game',
 			component: GJGame
+		},
+		{
+			path: '/:passage',
+			name: 'passage',
+			component: GJGame
 		}
 	]
 })

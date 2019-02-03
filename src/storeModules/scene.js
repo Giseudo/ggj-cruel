@@ -4,6 +4,7 @@ import store from '@/store'
 export default {
 	namespaced: true,
 	state: {
+		initial: '0',
 		scenes: null,
 		current: null,
 		history: [],
@@ -32,6 +33,10 @@ export default {
 
 		getHistory(state) {
 			return state.history
+		},
+
+		getInitial(state) {
+			return state.initial
 		}
 	},
 
@@ -79,6 +84,10 @@ export default {
 
 			if (state.scenes)
 				state.scenes[state.current].init()
+		},
+
+		setInitial(state, passage) {
+			Vue.set(state, 'initial', passage)
 		}
 	},
 

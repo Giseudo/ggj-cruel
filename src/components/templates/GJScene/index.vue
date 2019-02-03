@@ -12,6 +12,9 @@
 			/>
 		</transition>
 
+		<div class="gj-scene__debug" v-if="debug">
+			{{ $store.state.scene.passage }}
+		</div>
 
 		<div class="gj-scene__wrapper">
 			<div class="gj-scene__header">
@@ -112,6 +115,10 @@ export default {
 		hasPrevious: {
 			type: Boolean,
 			default: true
+		},
+		debug: {
+			type: Boolean,
+			default: false
 		}
 	},
 }
@@ -167,6 +174,14 @@ export default {
 	}
 	&__passage{
 		height: 70%;
+	}
+	&__debug{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		color: yellow;
+		font-weight: 600;
+		font-family: Roboto;
 	}
 }
 
