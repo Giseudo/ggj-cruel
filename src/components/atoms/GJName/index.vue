@@ -17,7 +17,7 @@ export default {
 
 <style lang="scss">
 .gj-name{
-	background: rgba(black, .6);
+	background: rgba(black, .8);
 	display: inline-block;
 	font-family: Roboto;
 	padding: 3px 10px;
@@ -25,5 +25,6 @@ export default {
 	font-size: 14px;
 	color: white;
 	font-weight: 600;
+	opacity: .8;
 }
 </style>

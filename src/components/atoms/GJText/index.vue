@@ -35,12 +35,13 @@ export default {
 .gj-text{
 	color: black;
 	font-family: Roboto;
+	opacity: .8;
 	&--body{
 		font-size: 14px;
 	}
 	&--speech{
-		font-size: 14px;
-		line-height: 24px;
+		font-size: 18px;
+		line-height: 32px;
 		font-family: Roboto Slab;
 	}
 	&--tiny{
@@ -64,10 +65,10 @@ export default {
 
 	blockquote{
 		border-left: 2px solid white;
-		margin: 15px 0;
-		padding: 5px 20px;
+		margin: 16px 0;
+		padding: 8px 24px;
 		font-style: italic;
-		font-size: 16px;
+		font-size: 20px;
 	}
 }
 </style>

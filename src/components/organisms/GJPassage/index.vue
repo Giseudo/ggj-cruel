@@ -154,12 +154,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 		width: 100%;
 		flex: 1;
 		position: relative;
-		background: rgba(black, .4);
+		background: rgba(black, .6);
 		cursor: pointer;
 	}
 	&__body{
 		box-sizing: border-box;
-		padding: 0px 20px;
+		padding: 8px 20px;
 		width: 100% !important;
 		height: auto !important;
 	}
@@ -181,8 +181,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 	&.is-first{
 		.gj-passage{
 			&__text::first-letter{
-				font-size: 48px;
-				margin: 10px 5px 10px 0;
+				font-size: 64px;
+				margin: 14px 8px 8px 0;
 				float: left;
 			}
 		}

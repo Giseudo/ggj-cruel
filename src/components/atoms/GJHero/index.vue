@@ -5,7 +5,7 @@
 			'is-dead': dead
 		}"
 	>
-		<gj-text class="gj-hero__name" :dark="dark" type="speech" :bold="true">
+		<gj-text class="gj-hero__name" :dark="dark" type="name" :bold="true">
 			{{ name }}
 		</gj-text>
 
@@ -129,8 +129,9 @@ export default {
 	transition: .3s $easeInOutQuad;
 	&__name{
 		position: absolute;
-		top: 3px;
-		left: 85px;
+		top: 8px;
+		left: 80px;
+		font-size: 12px;
 	}
 	&__avatar{
 		width: 80px;

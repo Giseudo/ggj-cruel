@@ -40,11 +40,13 @@
 			/>
 		</transition-group>
 
-		<gj-money
-			class="gj-status__gold"
-			:value="gold"
-			:dark="dark"
-		/>
+		<transition name="fade-scale">
+			<gj-sprite
+				v-show="orb"
+				class="gj-status__orb"
+				name="orb"
+			/>
+		</transition>
 	</div>
 </template>
 
@@ -52,12 +54,14 @@
 import GJHero from '@/components/atoms/GJHero'
 import GJHealth from '@/components/atoms/GJHealth'
 import GJMoney from '@/components/molecules/GJMoney'
+import GJSprite from '@/components/atoms/GJSprite'
 
 export default {
 	components: {
 		'gj-hero': GJHero,
 		'gj-health': GJHealth,
 		'gj-money': GJMoney,
+		'gj-sprite': GJSprite
 	},
 
 	props: {
@@ -93,9 +97,9 @@ export default {
 				avatar: require('@/assets/images/chars/yonah.jpg')
 			})
 		},
-		gold: {
-			type: Number|String,
-			default: 500
+		orb: {
+			type: Boolean,
+			default: false
 		},
 		dark: {
 			type: Boolean,
@@ -128,7 +132,7 @@ export default {
 			left: 50%;
 		}
 	}
-	&__gold{
+	&__orb{
 		margin-left: 10px;
 	}
 	&__mom{
@@ -151,4 +155,26 @@ export default {
 .parent-leave-active{
 	transform: translate(-50%, -50%) scale(0) !important;
 }
+
+// Fade scale
+.fade-scale-enter-active,
+.fade-scale-leave-active{
+	transition: all .3s $easeInOutQuad;
+}
+.fade-scale-enter,
+.fade-scale-leave-active{
+	opacity: 0 !important;
+	transform: scale(1.2) !important;
+}
+
+// Background next
+.background-next-enter-active{
+	transition: all 2s $easeInOutQuad;
+}
+.background-next-enter,
+.background-next-leave-active{
+	opacity: 0 !important;
+	transform: scale(1.2) !important;
+}
+
 </style>

@@ -41,7 +41,7 @@ export default {
 	&:before{
 		content: "";
 		position: absolute;
-		top: 30%;
+		top: 60%;
 		right: 0;
 		bottom: 0;
 		left: 0;
@@ -73,7 +73,7 @@ export default {
 	// Theme
 	&--default{
 		background: rgba(black, .6);
-		color: white;
+		color: rgba(white, .8);
 		&:hover,
 		&:focus{
 			background: rgba(black, .7);
@@ -81,7 +81,7 @@ export default {
 	}
 	&--primary{
 		background: $t-primary;
-		color: white;
+		color: rgba(white, .8);
 		&:hover,
 		&:focus{
 			background: darken($t-primary, 10%);
@@ -89,7 +89,7 @@ export default {
 	}
 	&--accent{
 		background: $t-accent;
-		color: white;
+		color: rgba(white, .8);
 		&:hover,
 		&:focus{
 			background: saturate($t-accent, 30%);
@@ -97,7 +97,7 @@ export default {
 	}
 	&--warn{
 		background: $t-warn;
-		color: white;
+		color: rgba(white, .8);
 		&:hover,
 		&:focus{
 			background: saturate($t-warn, 30%);

@@ -8,6 +8,7 @@ export default {
 		scenes: null,
 		current: null,
 		history: [],
+		back: true,
 		passage: null,
 		previousPassage: null,
 		background: null
@@ -37,6 +38,10 @@ export default {
 
 		getInitial(state) {
 			return state.initial
+		},
+
+		getBack(state) {
+			return state.back
 		}
 	},
 
@@ -46,6 +51,10 @@ export default {
 
 			if (state.passage.init)
 				passage.init(state.history[state.history.length - 1])
+		},
+
+		setBack(state, value) {
+			state.back = value
 		},
 
 		resetHistory(state) {
@@ -68,7 +77,7 @@ export default {
 
 			// Exit callback
 			if (passage && passage.exit)
-				passage.exit(next) // TODO Pass game data
+				passage.exit(next)
 
 			// Update passage
 			state.passage = next
@@ -76,7 +85,7 @@ export default {
 
 			// Init callback
 			if (passage && passage.init)
-				passage.init(previous) // TODO Pass game data
+				passage.init(previous)
 		},
 
 		setScene(state, payload) {

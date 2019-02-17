@@ -7,11 +7,11 @@ export default (store) => {
 	return {
 		'cruel': {
 			init: () => {
-				store.commit('scene/setBackground', require('@/assets/images/bgs/village-01.jpg'))
+				store.commit('scene/setBackground', require('@/assets/images/bgs/street-01.jpg'))
 
 				setTimeout(() =>
 					store.commit('scene/setPassage', store.state.scene.initial)
-				, 1000)
+				, 3000)
 			},
 
 			passages: {
@@ -36,24 +36,24 @@ Thomas vai ao encontro de Almir assim que recebe o recado. Chegando lá se depar
 					
 > Você é o próximo!
 					`,
-					next: () => {
-						store.commit('scene/setPassage', null)
-						setTimeout(() => store.commit('scene/setPassage', '0.3'), 1000)
-					}
+					next: () => store.commit('scene/setPassage', '0.3')
 				},
 
 				'0.3': {
-					init: () => {
-						store.commit('game/show', 'dad')
-					},
-					first: true,
+					exit: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					text: `
 Então Thomas volta para casa correndo para tentar salvar sua família a tempo, na noite escura o suor frio cai pela sua testa, enquanto você desliza pelas vielas pegando o máximo de atalhos.
 					`,
-					next: () => store.commit('scene/setPassage', '0.4')
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '0.4'), 1000)
+					}
 				},
 
 				'0.4': {
+					init: () => {
+						store.commit('game/show', 'dad')
+					},
 					text: `
 Já é quase noite quando você chega em sua casa ofegante, escancarando a porta. Sua esposa Judith se levanta da cadeira sobressaltada, seus filhos comem a sopa e também arregalam os olhos ao te ver chegar daquele jeito. Judith derruba a sopa quente nos próprios pés.
 					`,
@@ -70,28 +70,40 @@ Mas que me... que susto ${dad.name}
 							label: 'Precisamos fugir!',
 							callback: () => {
 								store.commit('scene/setPassage', null)
-								setTimeout(() => store.commit('scene/setPassage', '1'), 1000)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '1')
+									store.commit('game/save')
+								}, 1000)
 							}
 						},
 						{
 							label: 'Esconda as crianças!',
 							callback: () => {
 								store.commit('scene/setPassage', null)
-								setTimeout(() => store.commit('scene/setPassage', '2'), 1000)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '2')
+									store.commit('game/save')
+								}, 1000)
 							}
 						},
 						{
 							label: 'Pegue as crianças e fuja!',
 							callback: () => {
 								store.commit('scene/setPassage', null)
-								setTimeout(() => store.commit('scene/setPassage', '3'), 1000)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '3')
+									store.commit('game/save')
+								}, 1000)
 							}
 						},
 						{
 							label: 'Tentar agir normalmente.',
 							callback: () => {
 								store.commit('scene/setPassage', null)
-								setTimeout(() => store.commit('scene/setPassage', '4'), 1000)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '4')
+									store.commit('game/save')
+								}, 1000)
 							}
 						},
 					]
@@ -403,6 +415,7 @@ As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo
 				},
 
 				'6': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/basement-01.jpg')),
 					text: `
 Você caminha até o porão, desce as escadas e destranca a porta enquanto sua mulher termina de aprontar seus filhos para a inesperada fuga.
 					`,
@@ -848,6 +861,14 @@ Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar 
 				},
 
 				'16': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						}
+					}),
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos, você se aproxima de uma janela mas é atingido na têmpora por um pedaço de madeira que caiu do teto. O fogo consome toda sua casa e até mesmo suas lágrimas evaporam dentro dessa pira funerária. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
 					`,
@@ -855,6 +876,14 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 				},
 
 				'17': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						}
+					}),
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Uma tora de madeira crepitante cai  em cima de sua perna, você desenha um círculo ao seu redor com o cajado, fecha os olhos e chora, enquanto seu lar é destruído. Mesmo com o escudo arcano você sofre queimaduras no corpo todo e é esmagado pelos destroços. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
 					`,
@@ -965,7 +994,7 @@ O papel diz:
 							label: 'Usar escudo arcano',
 							type: 'cast',
 							callback: () => {
-								store.commit('game/cast', 30)
+								store.dispatch('game/cast', 30)
 									.then(() => store.commit('scene/setPassage', '21'))
 							}
 						},
@@ -973,6 +1002,14 @@ O papel diz:
 				},
 
 				'19': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						}
+					}),
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos, você se aproxima de uma janela mas é atingido na têmpora por um pedaço de madeira que caiu do teto. O fogo consome toda sua casa e até mesmo suas lágrimas evaporam dentro dessa pira funerária. Seu eterno e querido lar será também o túmulo de toda sua família.
 					`,
@@ -1112,6 +1149,7 @@ Antes que você pudesse argumentar vocês ouvem um Bak Bak Bak Bak em sua porta.
 				},
 
 				'25.3': {
+					init: () => store.commit('audio/play', 'arrow-01'),
 					text: `
 Judith também reconhece o mago e dispara uma flecha na direção do homem o acertando-o no olho esquerdo e derrubando-o no chão.
 					`,
@@ -1120,13 +1158,20 @@ Judith também reconhece o mago e dispara uma flecha na direção do homem o ace
 
 				'25.4': {
 					text: `
-A besta é uma arma fatal, seu único defeito é a demora para ser recarregada. Os guardas tiram a arma de sua esposa antes que ela conseguisse engatilhar o segundo dardo. Você luta bravamente e consegue esmagar o peito de dois dos seis cavaleiros restantes, mas é vencido pela quantidade injusta de guardas.
+A besta é uma arma fatal, seu único defeito é a demora para ser recarregada. Os guardas tiram a arma de sua esposa antes que ela conseguisse engatilhar o segundo dardo.
+					`,
+					next: () => store.commit('scene/setPassage', '25.4.1')
+				},
+
+				'25.4.1': {
+					text: `
+Você luta bravamente e consegue esmagar o peito de dois dos seis cavaleiros restantes, mas é vencido pela quantidade injusta de guardas.
 					`,
 					next: () => store.commit('scene/setPassage', '25.5')
 				},
 
 				'25.5': {
-					exit: () => {
+					init: () => {
 						store.commit('game/damage', {
 							target: 'dad',
 							amount: 100,

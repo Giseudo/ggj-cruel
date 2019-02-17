@@ -9,7 +9,7 @@ export const initial = {
 
 	dad: {
 		name: 'Thomas',
-		avatar: require('@/assets/images/chars/nier.jpg'),
+		avatar: require('@/assets/images/chars/dad.jpg'),
 		hp: [100, 100],
 		mana: [100, 100],
 		arcane: 10,
@@ -21,7 +21,7 @@ export const initial = {
 
 	mom: {
 		name: 'Judith',
-		avatar: require('@/assets/images/chars/kaine.jpg'),
+		avatar: require('@/assets/images/chars/judith.jpg'),
 		hp: [100, 100],
 		hide: true,
 		dead: false
@@ -29,7 +29,7 @@ export const initial = {
 
 	son: {
 		name: 'Jedah',
-		avatar: require('@/assets/images/chars/emil.jpg'),
+		avatar: require('@/assets/images/chars/jedah.jpg'),
 		hp: [100, 100],
 		hide: true,
 		dead: false
@@ -37,7 +37,7 @@ export const initial = {
 
 	daughter: {
 		name: 'Relah',
-		avatar: require('@/assets/images/chars/yonah.jpg'),
+		avatar: require('@/assets/images/chars/relah.jpg'),
 		hp: [100, 100],
 		hide: true,
 		dead: false
@@ -109,9 +109,15 @@ export default {
 
 			Vue.set(target.hp, 0, hp)
 
+			// Verify if target has died
 			if (hp == 0) {
 				Vue.set(target, 'dead', true)
 
+				// Disable previous button if player has died
+				if (target.name == state.dad.name)
+					store.commit('scene/setBack', false)
+
+				// Notificate
 				store.commit('notification/add', {
 					sprite: 'skull',
 					message: `${target.name} morreu!`
@@ -142,6 +148,7 @@ export default {
 
 		gameover(state) {
 			state.end = true
+
 			store.commit('scene/setPassage', null)
 		},
 
@@ -170,6 +177,12 @@ export default {
 
 			// Update passage
 			store.commit('scene/setPassage', data.passage)
+
+			// Reset history
+			store.commit('scene/resetHistory')
+
+			// Show previous button again
+			store.commit('scene/setBack', true)
 		},
 
 		save(state) {
@@ -178,18 +191,20 @@ export default {
 			state.memory = {
 				gold: data.gold,
 				orb: data.orb,
-				dad: JSON.parse(JSON.stringify(data.dad)),
+				dad: data.dad,
 				mom: data.mom,
 				son: data.son,
 				daughter: data.daughter,
-				scene: store.state.scene.current,
-				passage: store.state.scene.passage
+				scene: JSON.parse(JSON.stringify(store.state.scene.current)),
+				passage: JSON.parse(JSON.stringify(store.state.scene.passage))
 			}
 
 			store.commit('notification/add', {
 				sprite: 'letter',
 				message: 'Progresso salvo.'
 			})
+
+			store.commit('scene/resetHistory')
 		},
 
 		reset(state) {
@@ -208,6 +223,9 @@ export default {
 
 			// Back to home screen
 			store.commit('scene/setScene', data.scene)
+
+			// Show previous button again
+			store.commit('scene/setBack', true)
 		},
 
 		setOrb(state, payload = true) {

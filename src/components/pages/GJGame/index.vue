@@ -7,9 +7,10 @@
 		:mom="mom"
 		:son="son"
 		:daughter="daughter"
-		:gold="gold"
+		:orb="orb"
 		:background="background"
 		:passage="passage"
+		:back="back"
 		:notification="notification"
 		:has-previous="history.length > 0"
 		@previous="$store.commit('scene/previous')"
@@ -53,13 +54,18 @@ export default {
 			mom: 'game/getMom',
 			son: 'game/getSon',
 			daughter: 'game/getDaughter',
-			gold: 'game/getGold',
+			orb: 'game/getOrb',
 			passage: 'scene/getPassage',
 			history: 'scene/getHistory',
 			scene: 'scene/getCurrent',
+			back: 'scene/getBack',
 			background: 'scene/getBackground',
 			notification: 'notification/getCurrent',
 		})
+	},
+
+	mounted() {
+		this.$store.commit('audio/music', 'dark-tension-rising')
 	}
 }
 </script>

@@ -1,12 +1,17 @@
 <template>
 	<div class="gj-scene">
-		<div class="gj-scene__background" :style="{ backgroundImage: `url(${background})` }">
-		</div>
+		<transition name="background" appear>
+			<gj-background
+				class="gj-scene__background"
+				v-if="background"
+				:value="background"
+			/>
+		</transition>
 
 		<transition name="previous">
 			<gj-previous
 				class="gj-scene__previous"
-				v-if="hasPrevious"
+				v-if="hasPrevious && back"
 				size="sm"
 				@click="$emit('previous')"
 			/>
@@ -26,7 +31,7 @@
 						:mom="mom"
 						:son="son"
 						:daughter="daughter"
-						:gold="gold"
+						:orb="orb"
 						:dark="true"
 					/>
 				</transition>
@@ -62,6 +67,7 @@ import GJStatus from '@/components/organisms/GJStatus'
 import GJPassage from '@/components/organisms/GJPassage'
 import GJAlert from '@/components/molecules/GJAlert'
 import GJPrevious from '@/components/atoms/GJPrevious'
+import GJBackground from '@/components/atoms/GJBackground'
 
 import { mapGetters } from 'vuex'
 
@@ -70,7 +76,8 @@ export default {
 		'gj-status': GJStatus,
 		'gj-passage': GJPassage,
 		'gj-alert': GJAlert,
-		'gj-previous': GJPrevious
+		'gj-previous': GJPrevious,
+		'gj-background': GJBackground
 	},
 
 	props: {
@@ -90,9 +97,9 @@ export default {
 			type: Object,
 			default: null
 		},
-		gold: {
-			type: Number,
-			default: 300
+		orb: {
+			type: Boolean,
+			default: false
 		},
 		dad: {
 			type: Object,
@@ -113,6 +120,10 @@ export default {
 			default: undefined
 		},
 		hasPrevious: {
+			type: Boolean,
+			default: true
+		},
+		back: {
 			type: Boolean,
 			default: true
 		},
@@ -237,5 +248,17 @@ export default {
 .previous-leave-active{
 	transform: translate(-100%, 100%);
 	opacity: 0;
+}
+
+// Background intro
+.background-enter-active,
+.background-leave-active {
+	transition: all 3s $easeInOutQuad;
+}
+
+.background-enter,
+.background-leave-active{
+	opacity: 0;
+	transform: scale(1.2);
 }
 </style>

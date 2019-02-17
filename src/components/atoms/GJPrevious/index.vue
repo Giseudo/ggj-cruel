@@ -36,10 +36,11 @@ export default {
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
+		width: 400%;
 		height: 100%;
-		background: rgba(white, 0.6);
-		transform: rotate(45deg) scale(3) translate(0%, 30%);
+		background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.6));
+		transform: scale(3) rotate(45deg);
+		transform-origin: 50% 0%;
 	}
 	&__icon{
 		position: absolute;
