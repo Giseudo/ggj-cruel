@@ -1062,16 +1062,30 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 					actions: [
 						{
 							label: 'Usar escudo em você',
-							callback: () => store.commit('scene/setPassage', '22')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '22'))
+							}
 						},
 						{
 							label: 'Usar escudo no armário',
-							callback: () => store.commit('scene/setPassage', '23')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '23'))
+							}
 						},
 					]
 				},
 
 				'22': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						}
+					}),
 					text: `
 Uma tora de madeira crepitante cai entre você e o esconderijo de sua família. Impedindo que você chegue até eles, você desenha um círculo ao seu redor com o cajado, fecha os olhos e chora, enquanto seu lar é destruído. Mesmo com o escudo arcano você sofre queimaduras no corpo todo e é esmagado pelos destroços.
 					`,
@@ -1079,6 +1093,11 @@ Uma tora de madeira crepitante cai entre você e o esconderijo de sua família. 
 				},
 
 				'23': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 75,
+						sound: 'fire-01'
+					}),
 					text: `
 Você corre e tenta se esquivar de uma tora de fogo que cai do teto mas ela prende sua perna. Você ainda consegue desenhar o círculo em volta do armário.
 					`,
@@ -1094,6 +1113,14 @@ Judith! Mantenha as crianças junto de você e não se mexa! Eu te amo minha que
 				},
 
 				'23.2': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						},
+						amount: 100
+					}),
 					text: `
 Os gritos de sua mulher são abafados pelo som da madeira estalando, mas você consegue ver o armário se mexer com a força que ela está fazendo.
 					`,
