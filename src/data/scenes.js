@@ -1,9 +1,19 @@
 export default (store) => {
+	// Several game data shortcut
 	const dad = store.state.game.dad
 	const mom = store.state.game.mom
 	const son = store.state.game.son
 	const daughter = store.state.game.daughter
 
+	// The test function
+	function dice() {
+		let probability = store.state.game.orb ? 80 : 50,
+			rand = Math.floor(Math.random() * (100 - 0) ) + 0
+
+		return rand <= probability
+	}
+
+	// Return scene
 	return {
 		'cruel': {
 			init: () => {
@@ -51,6 +61,7 @@ Então Thomas volta para casa correndo para tentar salvar sua família a tempo, 
 				},
 
 				'0.4': {
+					first: true,
 					init: () => {
 						store.commit('game/show', 'dad')
 					},
@@ -496,6 +507,7 @@ Sua esposa e seus filhos gritam enquanto os homens do inquisidor com espada na m
 				'8': {
 					first: true,
 					init(previous) {
+						store.commit('scene/setBackground', require('@/assets/images/bgs/street-02.jpg'))
 						if (previous != null) {
 							store.commit('scene/setPassage', null)
 
@@ -592,10 +604,13 @@ Você! Retire o capuz!
 							negotiated = store.state.game.dad.negotiated,
 							chased = store.state.game.dad.chased
 
+						// Change background
+						store.commit('scene/setBackground', require('@/assets/images/bgs/forest-01.jpg'))
+
 						if (!wife)
 							store.commit('scene/setPassage', '94')
 
-						else if (everyone && negotiated)
+						else if (everyone && !chased)
 							store.commit('scene/setPassage', '76')
 
 						else if (everyone && chased)
@@ -623,8 +638,7 @@ O que estão esperando?! Não deixem que ele termine a conjuração! Matem-no!
 Três soldados partem para o ataque de uma vez.
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '46')
 						else
 							store.commit('scene/setPassage', '47')
@@ -651,8 +665,7 @@ Sua família corre na única direção em que não tem guardas e é perseguida p
 Você corre para alcançá-los enquanto eles entram na escura floresta de Germond.
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '9')
 						else
 							store.commit('scene/setPassage', '41')
@@ -784,17 +797,19 @@ O papel diz:
 							label: 'Usar escudo arcano',
 							type: 'cast',
 							callback: () => {
-								store.dispatch('game/cast', 30)
-									.then(() => store.commit('scene/setPassage', '17'))
+								store.commit('scene/setPassage', null)
+
+								setTimeout(() =>
+									store.dispatch('game/cast', 30)
+										.then(() => store.commit('scene/setPassage', '17'))
+									, 1000)
 							}
 						},
 					]
 				},
 
 				'15': {
-					init: () => {
-						// TODO Add some sound effects here
-					},
+					init: () => store.commit('audio/play', 'thunder-01'),
 					text: `
 Um raio é lançado para o alto e depois de alguns segundos cai em cima de um dos soldados. O soldado cai imóvel no chão.
 					`,
@@ -805,7 +820,7 @@ Um raio é lançado para o alto e depois de alguns segundos cai em cima de um do
 					text: `
 O líder dos homens faz um gesto para que ataquem e eles partem para cima de você ainda relutantes. Um por um os homens caem atingidos pelos raios conjurados do céu. Um raio é lançado no líder deles, mas ele se protege com uma barreira mágica. Você o reconhece: seu nome Rauin, o inquisidor do rei. Um mago que presta vassalagem a família Bavarosa a décadas.
 					`,
-					next: () => store.commit('scene/setPassage', '15.2')
+					next: () => store.commit('scene/setPassage', '15.3')
 				},
 
 				'15.3': {
@@ -816,6 +831,7 @@ Rauin da meia volta no cavalo, protegido por uma bolha mágica ele galopa em dir
 				},
 
 				'15.4': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					text: `
 Você volta para casa e conta todo o ocorrido a sua esposa.
 					`,
@@ -854,6 +870,7 @@ Judith não esconde o espanto quando você conta sobre o que fez no desfiladeiro
 				},
 
 				'15.9': {
+					init: () => store.commit('game/show', 'all'),
 					text: `
 Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar aqui com um exército ou coisa pior, venha. Temos que ir pela **floresta**.
 					`,
@@ -984,11 +1001,17 @@ O papel diz:
 					actions: [
 						{
 							label: 'Tentar sair',
-							callback: () => store.commit('scene/setPassage', '19')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '19'), 1000)
+							}
 						},
 						{
 							label: 'Correr até o armário',
-							callback: () => store.commit('scene/setPassage', '20')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '20'), 1000)
+							}
 						},
 						{
 							label: 'Usar escudo arcano',
@@ -1017,6 +1040,14 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 				},
 
 				'20': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						}
+					}),
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Você corre até o armário e o empurra, o teto da casa começa a desmoronar e toras de fogo caem prendendo o armário e sua perna. Você consegue ouvir o choro de suas crianças e sua mulher se transformar em gritos desesperados, enquanto você murmura desculpas que nunca serão ouvidas.
 					`,
@@ -1024,6 +1055,7 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 				},
 
 				'21': {
+					init: () => store.commit('audio/play', 'fire-01'),
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Você corre na direção do armário e percebe que sua energia arcana é suficiente somente para você ou para o armário.
 					`,
@@ -1279,14 +1311,21 @@ O papel diz:
 					actions: [
 						{
 							label: 'Tentar sair',
-							callback: () => store.commit('scene/setPassage', '27')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => store.commit('scene/setPassage', '27'), 1000)
+							}
 						},
 						{
 							label: 'Usar escudo arcano',
 							type: 'cast',
 							callback: () => {
-								store.dispatch('game/cast', 30)
-									.then(() => store.commit('scene/setPassage', '28'))
+								store.commit('scene/setPassage', null)
+
+								setTimeout(() =>
+									store.dispatch('game/cast', 30)
+										.then(() => store.commit('scene/setPassage', '28'))
+								, 1000)
 							}
 						}
 					]
@@ -1294,7 +1333,14 @@ O papel diz:
 
 				'27': {
 					init() {
-						store.commit('game/damage', { target: 'dad', amount: 100 })
+						store.commit('game/damage', {
+							target: 'dad',
+							amount: 100,
+							sound: {
+								name: 'explosion-01',
+								volume: .4
+							}
+						})
 					},
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos, você se aproxima de uma janela mas é atingido na têmpora por um pedaço de madeira que caiu do teto. O fogo consome toda sua casa e até mesmo suas lágrimas evaporam dentro dessa pira funerária. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
@@ -1305,6 +1351,14 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 				},
 
 				'28': {
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: {
+							name: 'explosion-01',
+							volume: .4
+						}
+					}),
 					text: `
 As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Uma tora de madeira crepitante cai  em cima de sua perna, você desenha um círculo ao seu redor com o cajado, fecha os olhos e chora, enquanto seu lar é destruído. Mesmo com o escudo arcano você sofre queimaduras no corpo todo e é esmagado pelos destroços. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
 					`,
@@ -1506,6 +1560,7 @@ Estou indo resolver um problema, tranque as portas e não abra pra ninguém.
 				},
 
 				'33.6': {
+					init: () => store.commit('scene/setBackground', null),
 					text: `
 Você acopla o orbe na ponta de seu cajado e sai de casa a passos largos, deixando para trás sua mulher e seus filhos atordoados.
 					`,
@@ -1524,6 +1579,8 @@ Você acopla o orbe na ponta de seu cajado e sai de casa a passos largos, deixan
 				'34': {
 					first: true,
 					init(previous) {
+						store.commit('scene/setBackground', require('@/assets/images/bgs/street-02.jpg'))
+
 						if (previous != null) {
 							store.commit('scene/setPassage', null)
 
@@ -1555,6 +1612,7 @@ Você sente o ar se condensar enquanto respira, coloca o capuz e escuta um agrup
 				},
 
 				'35': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					text: `
 No meio do caminho você pensa melhor e percebe que é perigoso demais deixar sua família sozinha, então volta e conta toda a verdade a Judith
 					`,
@@ -1607,11 +1665,14 @@ Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arr
 Você segura firme o cajado e murmura uma conjuração em voz baixa. Uma luz azulada envolve você em um círculo e o orbe flutua em cima do seu cajado. Os soldados ficam paralisados enquanto raios crepitam em volta de você.
 					`,
 					next: () => {
-						// TODO Implement test
-						if (true)
-							store.commit('scene/setPassage', '15')
-						else
-							store.commit('scene/setPassage', '39')
+						store.commit('scene/setPassage', null)
+
+						setTimeout(() => {
+							if (dice())
+								store.commit('scene/setPassage', '15')
+							else
+								store.commit('scene/setPassage', '39')
+						}, 1000)
 					}
 				},
 
@@ -1755,6 +1816,7 @@ Rauin nem olha mais para você, manuseia o orbe azul como se fosse uma criança 
 				},
 
 				'38.15': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					text: `
 Você corre até sua casa e conta tudo a Judith.
 					`,
@@ -1782,15 +1844,18 @@ Pelos Deuses, tem algo a ver com a queda da torre leste?
 					text: `
 Exatamente... Eu não sabia que ele era um rebelde, não teria me envolvido se soubesse. Mas o rei não acredita em mim, precisamos dar o fora daqui imediatamente.
 					`,
+					exit: () => store.commit('game/show', 'all'),
 					next: () => store.commit('scene/setPassage', '9')
 				},
 
 				'39': {
-					exit: () => {
-						// TODO Add some arrow bolt effect
-					},
+					init: () => store.commit('game/damage', {
+						target: 'dad',
+						amount: 100,
+						sound: 'sword-01'
+					}),
 					text: `
- Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e atacam, alguns são atingidos mas a maioria continua de pé. Rauin lança um ataque em conjunto com um arqueiro, meia dúzia de lâminas voam em sua direção. Você é acertado e sangra até a morte sozinho…
+Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e atacam, alguns são atingidos mas a maioria continua de pé. Rauin lança um ataque em conjunto com um arqueiro, meia dúzia de lâminas voam em sua direção. Você é acertado e sangra até a morte sozinho…
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -1997,8 +2062,7 @@ O que estão esperando?! Não deixem que ele termine a conjuração! Matem-no!
 Três soldados partem para o ataque de uma vez.
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '46')
 						else
 							store.commit('scene/setPassage', '47')
@@ -2006,6 +2070,7 @@ Três soldados partem para o ataque de uma vez.
 				},
 
 				'46': {
+					init: () => store.commit('audio/play', 'thunder-01'),
 					text: `
 Mas é tarde demais, você já terminou o murmúrio e um raio azul atravessa o peito dos três homens, você sente um cheiro forte de queimado quando os três homens tombam inertes no chão.
 					`,
@@ -2013,8 +2078,10 @@ Mas é tarde demais, você já terminou o murmúrio e um raio azul atravessa o p
 						{
 							label: 'Ataque mágico',
 							type: 'cast',
-							callback: () => store.dispatch('game/cast', 30)
-								.then(() => store.commit('scene/setPassage', '48'))
+							callback: () => {
+								store.dispatch('game/cast', 30)
+									.then(() => store.commit('scene/setPassage', '48'))
+							}
 						},
 						{
 							label: 'Ataque normal',
@@ -2027,14 +2094,23 @@ Mas é tarde demais, você já terminou o murmúrio e um raio azul atravessa o p
 					]
 				},
 
+				'47': {
+					init: () => {
+						store.commit('game/damage', { target: 'dad', amount: 100, sound: 'sword-01' })
+					},
+					text: `
+Um raio azul é lançado de seu cajado na direção dos homens, mas não rápido o suficiente. Os três conseguem se esquivar e te atacam em conjunto. Os homens são guerreiros treinados e por mas que você consiga se defender dos primeiros golpes é cortado por todos os lados e inevitavelmente sofre um ferimento fatal. Sua cabeça é cortada e rola morro abaixo enquanto sua família grita horrorizada.
+					`,
+					next: () => store.commit('game/gameover')
+				},
+
 				'48': {
 					first: true,
 					text: `
 O restante dos homens são mais precavidos, enquanto dois atacam corpo a corpo um terceiro retesa o arco e coloca uma flecha mirando você. Rauin já subiu novamente no cavalo e vem na direção de sua família.
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '50')
 						else
 							store.commit('scene/setPassage', '51')
@@ -2056,7 +2132,9 @@ O restante dos homens são mais precavidos, enquanto dois atacam corpo a corpo u
 				},
 
 				'50': {
-					init: () => store.commit('game/damage', { amount: 30, target: 'dad', sound: 'arrow-01' }),
+					init: () => {
+						store.commit('game/damage', { amount: 30, target: 'dad', sound: 'arrow-01' })
+					},
 					text: `
 Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e atacam. Mesmo assim os dois tombam mortos, mas o terceiro te atinge com uma flecha no ombro. Ao ser atingido você nota que Rauin está com sua esposa no cavalo.
 					`,
@@ -2149,6 +2227,7 @@ Seus filhos te agarram e choram sem querer te deixar partir, você se abaixa par
 				},
 
 				'53.4': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/castle-01.jpg')),
 					text: `
 O salão está jantando quando você é colocado em um banco num dos cantos do salão, Rauin traz Judith pelo braço e a coloca de frente para você. Bavarosa se levanta e caminha lentamente, com seu corpanzil de urso esbarrando nas outras mesas e cadeiras do salão.
 					`,
@@ -2261,12 +2340,6 @@ Dois guardas te agarram e te levam para um terreno a céu-aberto, uma fogueira j
 					next: () => store.commit('game/gameover')
 				},
 
-				'53.4': {
-					text: `
-Você segue em direção ao castelo do rei Bavarosa, carregando todo o ódio que um homem bom pode carregar. Já na porta do castelo guardas te cercam retiram suas posses, te algemam e te levam a presença do rei. Ao entrar no castelo você vê proteções mágicas desenhadas em todas as paredes, pela aura do lugar você sente que não poderá contar com sua magia ali.
-					`
-				},
-
 				'54': {
 					first: true,
 					text: `
@@ -2308,7 +2381,10 @@ Seus filhos te agarram e choram sem querer te deixar partir, você se abaixa par
 				},
 
 				'54.5': {
-					init: () => store.commit('game/setMana', 0),
+					init: () => {
+						store.commit('game/berserk')
+						store.commit('scene/setBackground', require('@/assets/images/bgs/castle-01.jpg'))
+					},
 					text: `
 Você segue em direção ao castelo do rei Bavarosa, carregando todo o ódio que um homem bom pode carregar.
 					`,
@@ -2457,8 +2533,7 @@ O que estão esperando?! Não deixem que ele termine a conjuração! Matem-no!
 Três soldados partem para o ataque de uma vez.
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '63')
 						else
 							store.commit('scene/setPassage', '64')
@@ -2467,11 +2542,7 @@ Três soldados partem para o ataque de uma vez.
 
 				'62': {
 					init: () => {
-						let mana = store.state.game.dad.mana[0]
-
-						// TODO Do the test
-						if (mana > 30) {
-							store.dispatch('game/cast', 30)
+						if (dice()) {
 							store.commit('scene/setPassage', '58')
 						} else {
 							store.commit('scene/setPassage', '59')
@@ -2480,6 +2551,7 @@ Três soldados partem para o ataque de uma vez.
 				},
 				
 				'63': {
+					init: () => store.commit('audio/play', 'thunder-01'),
 					text: `
 Mas é tarde demais, você já terminou o murmúrio e um raio atravessa o peito dos três homens, você sente um cheiro forte de queimado quando os três homens tombam inertes no chão.
 					`,
@@ -2487,9 +2559,11 @@ Mas é tarde demais, você já terminou o murmúrio e um raio atravessa o peito 
 						{
 							label: 'Ataque mágico',
 							type: 'cast',
-							callback: () =>
-								store.dispatch('game/cast', 30)
-									.then(() => store.commit('scene/setPassage', '48'))
+							callback: () => store.dispatch('game/cast', {
+								amount: 30,
+								sound: 'thunder-01'
+							})
+								.then(() => store.commit('scene/setPassage', '48'))
 						},
 						{
 							label: 'Ataque normal',
@@ -2498,8 +2572,7 @@ Mas é tarde demais, você já terminou o murmúrio e um raio atravessa o peito 
 						{
 							label: 'Fugir',
 							callback: () => {
-								// TODO Do the test
-								if (true)
+								if (dice())
 									store.commit('scene/setPassage', '74')
 								else
 									store.commit('scene/setPassage', '75')
@@ -2524,8 +2597,7 @@ Um raio é lançado de seu cajado na direção dos homens, mas não rápido o su
 Você segura firme o cajado e murmura uma conjuração em voz baixa. Uma luz azulada envolve você em um círculo e o orbe flutua em cima do seu cajado. Os soldados são surpreendidos quando raios começam a cair em cima deles.
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '72')
 						else
 							store.commit('scene/setPassage', '73')
@@ -2533,6 +2605,7 @@ Você segura firme o cajado e murmura uma conjuração em voz baixa. Uma luz azu
 				},
 
 				'71': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					first: true,
 					text: `
 Você conta apressadamente tudo que aconteceu a sua esposa e que os soldados do rei se aproximam, apesar de surpresa ela se apressa e vocês conseguem sair pelos fundos antes dos soldados chegarem.
@@ -2651,8 +2724,7 @@ Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar 
 Aproveitem! Corram!
 					`,
 					next: () => {
-						// TODO Do the test
-						if (true)
+						if (dice())
 							store.commit('scene/setPassage', '74.1')
 						else
 							store.commit('scene/setPassage', '75')
@@ -2715,21 +2787,13 @@ Você anda na frente guiando o caminho, a noite é quase impossível enxergar. C
 					text: `
 Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos negros, três animais no total. Sedentos por sangue eles rosnam e partem em sua direção.
 					`,
-					next: () => store.commit('scene/setPassage', '76.5')
-				},
-
-				'76.5': {
-					text: `
-Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos negros, três animais no total. Sedentos por sangue eles rosnam e partem em sua direção.
-					`,
 					actions: [
 						{
 							label: 'Ataque mágico',
 							type: 'cast',
 							callback: () => store.dispatch('game/cast', 30)
 								.then(() => {
-									// TODO Do the test
-									if (true)
+									if (dice())
 										store.commit('scene/setPassage', '80')
 									else
 										store.commit('scene/setPassage', '81')
@@ -2738,8 +2802,7 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos
 						{
 							label: 'Ataque normal',
 							callback: () => {
-								// TODO Do the test
-								if (true)
+								if (dice())
 									store.commit('scene/setPassage', '82')
 								else
 									store.commit('scene/setPassage', '83')
@@ -2748,8 +2811,7 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos
 						{
 							label: 'Fugir',
 							callback: () => {
-								// TODO Do the test
-								if (true)
+								if (dice())
 									store.commit('scene/setPassage', '84')
 								else
 									store.commit('scene/setPassage', '85')
@@ -2759,6 +2821,7 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos
 				},
 
 				'80': {
+					init: () => store.commit('audio/play', 'fire-01'),
 					text: `
 Você já tinha preparado um escudo mágico e quando o primeiro lobo investe, dá com os dentes em uma barreira invisível e quebra o pescoço. Os outros rosnam vacilantes após a morte do companheiro, o segundo que eles vacilam é o suficiente para você lançar uma lufada de fogo na direção deles. Os dois correm com o focinho queimado e o rabo entre as pernas.
 					`,
@@ -2766,7 +2829,7 @@ Você já tinha preparado um escudo mágico e quando o primeiro lobo investe, d�
 				},
 
 				'81': {
-					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'bite-01' }),
+					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'wolf-01' }),
 					text: `
 Você já tinha preparado um escudo mágico e quando o primeiro lobo investe, dá com os dentes em uma barreira invisível e quebra o pescoço. Os outros rosnam vacilantes após a morte do companheiro, mas atacam por cima e por baixo ao mesmo tempo. Você consegue se defender dos dois ataques mas nota que sua família também está sendo atacada, você se distrai e os lobos rasgam sua perna e braço. Uma matilha inteira ataca em conjunto e devora você e sua família.
 					`,
@@ -2781,7 +2844,7 @@ Você já tinha se preparado para a investida, e quando o primeiro lobo corre em
 				},
 
 				'83': {
-					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'bite-01' }),
+					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'wolf-01' }),
 					text: `
 Você já tinha se preparado para a investida do primeiro lobo, mas a grama úmida te faz escorregar. Sua espada passa ao lado da cabeça do lobo e ele morde seu ombro, os outros dois agarram seus pés e puxam cada um para um lado. Você sente sua carne se rasgar e Judith com uma besta em mãos acerta um dardo na cabeça de um dos lobos. A besta demora muito para rearmar, e antes que ela pudesse colocar o segundo dardo na arma, os lobos já tinham terminado com você e partiam para acabar com sua família.
 					`,
@@ -2834,6 +2897,7 @@ O lobo investe contra você, sua espada passa ao lado da cabeça do lobo e ele m
 				},
 
 				'86': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/cave-01.jpg')),
 					text: `
 Vocês correm e chegam até o esconderijo. Nas encostas de uma montanha existe uma gruta coberta por pedras, escondida devido a uma de suas conjurações mágicas.
 					`,
@@ -2849,6 +2913,7 @@ Vocês correm e chegam até o esconderijo. Nas encostas de uma montanha existe u
 				},
 
 				'86.2': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/cave-01.jpg')),
 					text: `
 As pedras que bloqueavam a entrada da caverna somem abrindo caminho para você e sua família.
 					`,
@@ -2926,8 +2991,7 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista algun
 							type: 'cast',
 							callback: () => store.dispatch('game/cast', 30)
 								.then(() => {
-									// TODO Do the test
-									if (true)
+									if (dice())
 										store.commit('scene/setPassage', '90')
 									else
 										store.commit('scene/setPassage', '91')
@@ -2938,8 +3002,7 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista algun
 							type: 'cast',
 							callback: () => store.dispatch('game/cast', 10)
 								.then(() => {
-									// TODO Do the test
-									if (true)
+									if (dice())
 										store.commit('scene/setPassage', '92')
 									else
 										store.commit('scene/setPassage', '93')
@@ -3074,10 +3137,9 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos
 						{
 							label: 'Ataque mágico',
 							type: 'cast',
-							callback: () => store.dispatch('game/cast')
+							callback: () => store.dispatch('game/cast', 30)
 								.then(() => {
-									// TODO Do the test
-									if (true)
+									if (dice())
 										store.commit('scene/setPassage', '97')
 									else
 										store.commit('scene/setPassage', '98')
@@ -3086,10 +3148,9 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos
 						{
 							label: 'Fugir',
 							type: 'cast',
-							callback: () => store.dispatch('game/cast')
+							callback: () => store.dispatch('game/cast', 30)
 								.then(() => {
-									// TODO Do the test
-									if (true)
+									if (dice())
 										store.commit('scene/setPassage', '99')
 									else
 										store.commit('scene/setPassage', '100')
@@ -3099,6 +3160,7 @@ Cerca de uma hora e meia depois de entrarem na densa floresta você avista lobos
 				},
 
 				'97': {
+					init: () => store.commit('audio/play', 'fire-01'),
 					text: `
 Você já tinha preparado um escudo mágico e quando o primeiro lobo investe, dá com os dentes em uma barreira invisível e quebra o pescoço. Os outros rosnam vacilantes após a morte do companheiro, o segundo que eles vacilam é o suficiente para você lançar uma lufada de fogo na direção deles. Os dois correm com o focinho queimado e o rabo entre as pernas.
 					`,
@@ -3106,7 +3168,7 @@ Você já tinha preparado um escudo mágico e quando o primeiro lobo investe, d�
 				},
 
 				'98': {
-					init: () => store.commit('game/damage', { amount: 100, target: 'all', sound: 'fang-01' }),
+					init: () => store.commit('game/damage', { amount: 100, target: 'all', sound: 'wolf-01' }),
 					text: `
 Você já tinha preparado um escudo mágico e quando o primeiro lobo investe, dá com os dentes em uma barreira invisível e quebra o pescoço. Os outros rosnam vacilantes após a morte do companheiro, mas atacam por cima e por baixo ao mesmo tempo. Você consegue se defender dos dois ataques mas nota que sua família também está sendo atacada, você se distrai e os lobos rasgam sua perna e braço. Uma matilha inteira ataca em conjunto e devora você e o restante de sua família.
 					`,
@@ -3160,6 +3222,7 @@ O lobo investe contra você, a flecha no ombro faz seu golpe vacilar, sua espada
 				},
 
 				'101': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/cave-01.jpg')),
 					text: `
 Vocês correm e chegam até o esconderijo. Nas encostas de uma montanha existe uma gruta coberta por pedras, escondida devido a uma de suas conjurações mágicas.
 					`,

@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/vue'
 import GJBackground from './index'
 
-storiesOf('Background - gj-background', module)
+storiesOf('Atom - gj-background', module)
 	.add('default', () => ({
 		components: {
 			'gj-background': GJBackground

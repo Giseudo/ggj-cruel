@@ -139,6 +139,19 @@ export default {
 		border-radius: 80px;
 		background-size: cover;
 		background-position: center;
+		position: relative;
+		&:before{
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: 999px;
+			transform: scale(1.03);
+			background: $c-darkred;
+			z-index: -1;
+		}
 	}
 	&__wrapper{
 		position: absolute;

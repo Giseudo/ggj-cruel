@@ -13,9 +13,12 @@ export default {
 		sounds: {
 			'click': require('@/assets/audios/effects/click-01.wav'),
 			'punch': require('@/assets/audios/effects/punch-01.mp3'),
+			'wolf-01': require('@/assets/audios/effects/wolf-01.wav'),
 			'sword-01': require('@/assets/audios/effects/sword-01.mp3'),
 			'arrow-01': require('@/assets/audios/effects/arrow-01.wav'),
-			'explosion-01': require('@/assets/audios/effects/explosion-01.wav')
+			'explosion-01': require('@/assets/audios/effects/explosion-01.wav'),
+			'thunder-01': require('@/assets/audios/effects/thunder-01.mp3'),
+			'fire-01': require('@/assets/audios/effects/fire-01.mp3')
 		},
 	},
 

@@ -62,6 +62,7 @@ export default {
 	top: 0;
 	left: 0;
 	overflow: hidden;
+	pointer-events: none;
 	&__image,
 	&__next{
 		position: absolute;

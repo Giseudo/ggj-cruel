@@ -6,6 +6,7 @@ export const initial = {
 	passage: '0',
 	gold: 500,
 	orb: false,
+	beat: false,
 
 	dad: {
 		name: 'Thomas',
@@ -88,17 +89,47 @@ export default {
 		},
 		getNegotiated(state) {
 			return state.dad.negotiated
+		},
+		getBeat(state) {
+			return state.beat
 		}
 	},
 
 	mutations: {
 		damage(state, payload) {
+			// Damage everyone
+			if (payload.target == 'all') {
+				store.commit('game/damage', {
+					target: 'dad',
+					amount: payload.amount,
+					sound: payload.sound
+				})
+				store.commit('game/damage', {
+					target: 'mom',
+					amount: payload.amount,
+					sound: payload.sound
+				})
+				store.commit('game/damage', {
+					target: 'son',
+					amount: payload.amount,
+					sound: payload.sound
+				})
+				store.commit('game/damage', {
+					target: 'daughter',
+					amount: payload.amount,
+					sound: payload.sound
+				})
+
+				return
+			}
+
 			let target = state[payload.target],
 				hp = target.hp[0]
 
 			if (target.dead)
 				return
 
+			// Play sound
 			if (payload.sound)
 				store.commit('audio/play', payload.sound)
 
@@ -146,8 +177,11 @@ export default {
 			Vue.set(state[character], 'hide', true)
 		},
 
-		gameover(state) {
+		gameover(state, beat) {
 			state.end = true
+
+			if (beat)
+				state.beat = true
 
 			store.commit('scene/setPassage', null)
 		},
@@ -155,12 +189,14 @@ export default {
 		init(state) {
 			state.start = true
 			state.end = false
+			state.beat = false
 			store.commit('game/load')
 		},
 
 		load(state) {
 			let data = state.memory
 
+			state.beat = false
 			state.end = false
 
 			if (!data)
@@ -211,6 +247,7 @@ export default {
 			let data = JSON.parse(JSON.stringify(initial))
 
 			state.memory = null
+			state.beat = false
 			state.end = false
 
 			Vue.set(state, 'gold', data.gold)
@@ -252,26 +289,45 @@ export default {
 			Vue.set(state.dad, 'chased', true)
 		},
 
+		berserk(state) {
+			store.commit('game/setMana', 0)
+			state.dad.avatar = require('@/assets/images/chars/dad-berserk.jpg')
+		},
+
 		setMana(state, amount) {
 			Vue.set(state.dad.mana, 0, amount)
 		}
 	},
 
 	actions: {
-		cast({ state }, amount) {
-			let mana = state.dad.mana[0]
+		cast({ state }, payload) {
+			let mana = state.dad.mana[0],
+				amount = payload
+
+			if (typeof payload === 'object')
+				amount = payload.amount
 
 			return new Promise((resolve, reject) => {
 				if (mana - amount >= 0) {
+					// Bug fix
+					store.commit('scene/setPassage', null)
+
+					// Play sound
+					if (typeof payload === 'object' && payload.sound)
+						store.commit('audio/play', payload.sound)
+
+					// Update mana
 					Vue.set(state.dad.mana, 0, mana - amount)
-					resolve(state.dad.mana)
+
+					// Return current mana
+					return resolve(state.dad.mana)
 				} else {
 					store.commit('notification/add', {
 						sprite: 'wand',
 						message: 'Você não tem mana suficiente!'
 					})
 
-					reject(state.dad.mana)
+					return reject(state.dad.mana)
 				}
 			})
 		}

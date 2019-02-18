@@ -80,27 +80,27 @@ export default {
 		}
 	}
 	&--primary{
-		background: $t-primary;
+		background: rgba($t-primary, .6);
 		color: rgba(white, .8);
 		&:hover,
 		&:focus{
-			background: darken($t-primary, 10%);
+			background: rgba($t-primary, .7);
 		}
 	}
 	&--accent{
-		background: $t-accent;
+		background: rgba($t-accent, .6);
 		color: rgba(white, .8);
 		&:hover,
 		&:focus{
-			background: saturate($t-accent, 30%);
+			background: rgba($t-accent, .7);
 		}
 	}
 	&--warn{
-		background: $t-warn;
+		background: rgba($t-warn, .6);
 		color: rgba(white, .8);
 		&:hover,
 		&:focus{
-			background: saturate($t-warn, 30%);
+			background: rgba($t-warn, .7);
 		}
 	}
 }

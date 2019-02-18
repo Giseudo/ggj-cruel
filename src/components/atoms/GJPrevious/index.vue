@@ -34,7 +34,7 @@ export default {
 	&:before{
 		content: "";
 		position: absolute;
-		top: 0;
+		top: -40px;
 		left: 0;
 		width: 400%;
 		height: 100%;

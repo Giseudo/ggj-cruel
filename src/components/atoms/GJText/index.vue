@@ -40,8 +40,8 @@ export default {
 		font-size: 14px;
 	}
 	&--speech{
-		font-size: 18px;
-		line-height: 32px;
+		font-size: 16px;
+		line-height: 26px;
 		font-family: Roboto Slab;
 	}
 	&--tiny{

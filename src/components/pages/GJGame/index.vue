@@ -65,7 +65,8 @@ export default {
 	},
 
 	mounted() {
-		this.$store.commit('audio/music', 'dark-tension-rising')
+		// Play music
+		// this.$store.commit('audio/music', 'dark-tension-rising')
 	}
 }
 </script>

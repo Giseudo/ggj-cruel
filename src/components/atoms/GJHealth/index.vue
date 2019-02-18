@@ -17,7 +17,8 @@
 		<svg class="gj-health__circle" viewBox="0 0 42 42">
 			<circle cx="21" cy="21" r="18" fill="none" stroke="#421216" stroke-width="4"
 				stroke-dasharray="113.076"
-				:stroke-dashoffset="113.076 * (1 - 1)"
+				:stroke-dashoffset="0"
+				:style="{transform: 'scale(1.05)', transformOrigin: '50% 50%'}"
 			/>
 			<circle cx="21" cy="21" r="18" fill="none" :stroke="color" stroke-width="5"
 				stroke-dasharray="113.076"

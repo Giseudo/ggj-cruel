@@ -143,16 +143,6 @@ export default {
 	justify-content: space-between;
 	position: relative;
 	z-index: 5;
-	&:before{
-		content: "";
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 100%;
-		height: 400px;
-		background: linear-gradient(to bottom, rgba(black, .8) 0%, transparent 100%);
-		z-index: -1;
-	}
 	&__background{
 		position: absolute;
 		top: 0;

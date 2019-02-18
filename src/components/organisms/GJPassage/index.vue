@@ -154,7 +154,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 		width: 100%;
 		flex: 1;
 		position: relative;
-		background: rgba(black, .6);
+		background: rgba(black, .4);
 		cursor: pointer;
 	}
 	&__body{
@@ -181,7 +181,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim ur
 	&.is-first{
 		.gj-passage{
 			&__text::first-letter{
-				font-size: 64px;
+				font-size: 48px;
 				margin: 14px 8px 8px 0;
 				float: left;
 			}

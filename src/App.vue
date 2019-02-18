@@ -4,6 +4,8 @@
 			<gj-continue
 				v-if="end"
 				class="gj-app__continue"
+				:beat="beat"
+				:message="beat ? 'Você salvou seu lar!' : null"
 				@continue="onContinue"
 				@quit="onQuit"
 			/>
@@ -25,7 +27,8 @@ export default {
 
 	computed: {
 		...mapGetters({
-			'end': 'game/getEnd'
+			'end': 'game/getEnd',
+			'beat': 'game/getBeat'
 		})
 	},
 
