@@ -1,7 +1,7 @@
 <template>
 	<gj-scene class="gj-game"
 		v-if="scene"
-		:debug="true"
+		:debug="false"
 		:status="status"
 		:dad="dad"
 		:mom="mom"

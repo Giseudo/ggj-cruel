@@ -17,7 +17,8 @@ export const initial = {
 		hide: true,
 		chased: false,
 		negotiated: false,
-		dead: false
+		dead: false,
+		regret: false
 	},
 
 	mom: {
@@ -92,6 +93,9 @@ export default {
 		},
 		getBeat(state) {
 			return state.beat
+		},
+		getRegret(state) {
+			return state.dad.regret
 		}
 	},
 
@@ -178,10 +182,10 @@ export default {
 		},
 
 		gameover(state, beat) {
-			state.end = true
-
 			if (beat)
 				state.beat = true
+
+			state.end = true
 
 			store.commit('scene/setPassage', null)
 		},
@@ -273,6 +277,10 @@ export default {
 				})
 
 			state.orb = payload
+		},
+
+		regret(state, payload) {
+			state.dad.regret = true
 		},
 
 		negotiate(state) {

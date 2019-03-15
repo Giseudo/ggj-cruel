@@ -28,7 +28,7 @@ export default (store) => {
 				'0': {
 					first: true,
 					text: `
-A muito, muito tempo atrás. No continente de Jaule, Thomas Webtalle e Almir Al’Hajid, uma dupla de magos experientes recebeu um contrato de um forasteiro. Um feitiço tão poderoso que poderia derrubar até mesmo uma enorme muralha, o contratante pagou seu peso em ouro e garantiu que não utilizaria o feitiço na Bavaria, reinado da família Bavarosa. O contratante era ruivo e utilizava os trajes do país de Galis, túnica vermelha e ornamentada com ouro, Galis não tinha nenhuma rixa com a Bavária, e Almir convenceu Thomas a aceitar o trabalho. O que eles não sabiam é que seu contratante era Timury Garkim um rebelde insurgente, ele usou o feitiço criado por Thomas e Almir para destruir uma das torres do rei Bavarosa, enquanto o rei presidia uma reunião com seus líderes e generais. Timury foi morto no atentado contra o rei, levou consigo metade dos oficiais da Bavária. Esse evento ficou conhecido como a queda da torre.
+A muito, muito tempo atrás. No continente de Jaule, Thomas Webtalle e Almir Al’Hajid, uma dupla de magos experientes recebeu um contrato de um forasteiro. Um feitiço tão poderoso que poderia derrubar até mesmo uma enorme muralha, o contratante pagou seu peso em ouro e garantiu que não utilizaria o feitiço na Bavaria, reinado da família Bavarosa. O contratante era ruivo e utilizava os trajes do país de Galis, túnica vermelha ornamentada com ouro, Galis não tinha nenhuma rixa com a Bavária, e Almir convenceu Thomas a aceitar o trabalho. O que eles não sabiam é que seu contratante era Timury Garkim um rebelde insurgente, ele usou o feitiço criado por Thomas e Almir para destruir uma das torres do rei Bavarosa, enquanto o rei presidia uma reunião com seus líderes e generais. Timury foi morto no atentado contra o rei, levou consigo metade dos oficiais da Bavária. Esse evento ficou conhecido como a queda da torre.
 					`,
 					next: () => store.commit('scene/setPassage', '0.1')
 				},
@@ -37,36 +37,35 @@ A muito, muito tempo atrás. No continente de Jaule, Thomas Webtalle e Almir Al�
 					text: `
 Meses se passaram e Thomas e Almir continuaram na Bavária pois acharam que não tinha como o rei ligar o atentado aos dois. Contudo, de uns tempos para cá, cada vez mais rebeldes tem sido capturados e levados até o castelo do rei. O medo paira sobre os dois, Thomas recebeu o recado de um garoto que dizia que Almir desejava vê-lo com urgência…
 					`,
-					next: () =>	store.commit('scene/setPassage', '0.2')
+					next: () =>	{
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '0.2'), 1000)
+					}
 				},
 
 				'0.2': {
 					text: `
 Thomas vai ao encontro de Almir assim que recebe o recado. Chegando lá se depara com uma cena estarrecedora, seu amigo Almir, sujo de sangue e caído sobre a mesa. Ao se aproximar e virar o corpo, as entranhas de Almir escorregam pelo chão, sujando suas botas de sangue e merda. Na mesa, entalhado por uma faca, está escrito:
-					
-> Você é o próximo!
+
+> Você é o próximo.
 					`,
 					next: () => store.commit('scene/setPassage', '0.3')
 				},
 
 				'0.3': {
 					exit: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
-					text: `
-Então Thomas volta para casa correndo para tentar salvar sua família a tempo, na noite escura o suor frio cai pela sua testa, enquanto você desliza pelas vielas pegando o máximo de atalhos.
-					`,
-					next: () => {
-						store.commit('scene/setPassage', null)
-						setTimeout(() => store.commit('scene/setPassage', '0.4'), 1000)
-					}
-				},
-
-				'0.4': {
-					first: true,
 					init: () => {
 						store.commit('game/show', 'dad')
 					},
 					text: `
-Já é quase noite quando você chega em sua casa ofegante, escancarando a porta. Sua esposa Judith se levanta da cadeira sobressaltada, seus filhos comem a sopa e também arregalam os olhos ao te ver chegar daquele jeito. Judith derruba a sopa quente nos próprios pés.
+Então Thomas volta para casa correndo para tentar salvar sua família a tempo, na noite escura o suor frio cai pela sua testa, enquanto você desliza pelas vielas pegando o máximo de atalhos.
+					`,
+					next: () => store.commit('scene/setPassage', '0.4')
+				},
+
+				'0.4': {
+					text: `
+Você chega em sua casa ofegante, escancarando a porta. Sua esposa Judith se levanta da cadeira sobressaltada, seus filhos comem a sopa e também arregalam os olhos ao te ver chegar daquele jeito. Judith derruba a sopa quente nos próprios pés.
 					`,
 					next: () => store.commit('scene/setPassage', '0.5')
 				},
@@ -122,7 +121,7 @@ Mas que me... que susto ${dad.name}
 
 				'1': {
 					text: `
-Você puxa sua Judith até um canto da sala e tenta explicar a situação.
+Você puxa Judith até um canto da sala e tenta explicar a situação.
 					`,
 					next: () => store.commit('scene/setPassage', '1.1')
 				},
@@ -138,7 +137,7 @@ Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos 
 				'1.2': {
 					name: mom.name,
 					text: `
-Pelos Deuses, tem algo a ver com aquele ataque terrorista que aconteceu na torre leste?
+Pelos Deuses, tem algo a ver com a queda da torre leste?
 					`,
 					next: () => store.commit('scene/setPassage', '1.3')
 				},
@@ -146,7 +145,7 @@ Pelos Deuses, tem algo a ver com aquele ataque terrorista que aconteceu na torre
 				'1.3': {
 					name: dad.name,
 					text: `
-Exatamente... Eu não sabia que era um rebelde, não teria me envolvido se soubesse. Mas o rei não vai acreditar em mim, precisamos dar o fora daqui imediatamente.
+Exatamente... Eu não sabia que ele era um rebelde, não teria me envolvido se soubesse. Mas o rei não vai acreditar em mim, precisamos dar o fora daqui imediatamente.
 					`,
 					next: () => store.commit('scene/setPassage', '1.4')
 				},
@@ -162,6 +161,7 @@ Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arr
 						},
 						{
 							label: 'Ir até o porão',
+							conditions: () => !store.state.game.dad.regret,
 							callback: () => store.commit('scene/setPassage', '6')
 						},
 					]
@@ -183,19 +183,32 @@ Judith se espanta com o seu comportamento mas faz o que é dito, você ajuda-a a
 				},
 
 				'2.2': {
+					name: dad.name,
 					text: `
-**${dad.name}**: Vamos crianças entrem logo!
+Vamos crianças entrem logo!
+					`,
+					next: () => store.commit('scene/setPassage', '2.2.1')
+				},
 
-**${son.name}**: Mas pai, eu estava terminando de comer a sopa...
+				'2.2.1': {
+					name: son.name,
+					text: `
+Mas pai, eu estava terminando de comer a sopa...
+					`,
+					next: () => store.commit('scene/setPassage', '2.2.2')
+				},
 
-**${dad.name}**: Não temos tempo para isso filho, entra logo ai!
+				'2.2.2': {
+					name: dad.name,
+					text: `
+Não temos tempo para isso filho, entra logo ai!
 					`,
 					next: () => store.commit('scene/setPassage', '2.5')
 				},
 
 				'2.5': {
 					text: `
-Depois de empurrar o armário de volta para cima do alçapão você tenta explicar a situação para Judith.
+Depois de empurrar o armário de volta para cima do alçapão, você tenta explicar a situação para Judith:
 					`,
 					next: () => store.commit('scene/setPassage', '2.6')
 				},
@@ -211,7 +224,7 @@ Almir está morto, vocês precisam sair da cidade agora mesmo. Eu e Almir fomos 
 				'2.7': {
 					name: mom.name,
 					text: `
-Pelos Deuses, tem algo a ver com aquele ataque terrorista que aconteceu na torre leste?
+Pelos Deuses, tem algo a ver com a queda da torre leste?
 					`,
 					next: () => store.commit('scene/setPassage', '2.8')
 				},
@@ -326,7 +339,7 @@ Não foi nada querida, só...
 
 				'4.2.1': {
 					text: `
-Você aponta para os sapatos sujos, a luz de um único lampião fica impossível discernir se aquilo é sangue ou lama.
+Você aponta para os sapatos sujos, sobre a luz de um único lampião em outro cômodo fica impossível discernir se aquilo é sangue ou lama.
 					`,
 					next: () => store.commit('scene/setPassage', '4.2.2')
 				},
@@ -334,7 +347,7 @@ Você aponta para os sapatos sujos, a luz de um único lampião fica impossível
 				'4.2.2': {
 					name: dad.name,
 					text: `
-Pisei em uma poça de porcos enquanto voltava para casa.
+Pisei em uma poça de porcos enquanto voltava para casa
 					`,
 					next: () => store.commit('scene/setPassage', '4.2.3')
 				},
@@ -356,7 +369,7 @@ Isso não é motivo para entrar assim mocinho!
 
 				'4.4': {
 					text: `
-Judith nota suas mãos tremendo ao segurar o balde e te olha de maneira inquisidora.
+Judith nota suas mãos tremendo ao segurar o balde e te olha de maneira questionadora.
 					`,
 					next: () => {
 						store.commit('scene/setPassage', null)
@@ -387,6 +400,7 @@ Vamos lá, fala logo o que está acontecendo.
 				},
 
 				'5': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					text: `
 Sua filha de dez anos Rehla segura uma boneca de palha e uma bolsa de pano, seu filho Jedah traz uma espada curta na cintura. O garoto tem treze anos de idade e apesar da intenção, não sabe manusear a arma. Você toma a espada para si e entrega um machado para ele.
 					`,
@@ -396,7 +410,7 @@ Sua filha de dez anos Rehla segura uma boneca de palha e uma bolsa de pano, seu 
 				'5.1': {
 					name: dad.name,
 					text: `
-Talvez outra hora garoto, por enquanto tome esse machado e fique por perto
+Talvez outra hora garoto, por enquanto tome esse machado e fique por perto.
 					`,
 					next: () => store.commit('scene/setPassage', '5.2'),
 				},
@@ -404,14 +418,14 @@ Talvez outra hora garoto, por enquanto tome esse machado e fique por perto
 				'5.2': {
 					init: () => store.commit('game/show', 'all'),
 					text: `
-Você puxa Judith e as crianças pelo braço até a porta dos fundos, ao levantar-se nota um grupo de meia dúzia de soldados do rei vindo na direção de sua casa.
+Você leva Judith e as crianças pelo braço até a porta dos fundos, ao levantar-se nota um grupo de meia dúzia de soldados do rei vindo na direção de sua casa.
 					`,
 					next: () => store.commit('scene/setPassage', '5.3'),
 				},
 
 				'5.3': {
 					text: `
-As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo matagal que vai até a floresta Germonde. Contudo é noite e a floresta também representa um perigo real.
+As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo matagal que vai até a floresta Germonde. Contudo, é noite e a floresta também representa um perigo real.
 					`,
 					actions: [
 						{
@@ -444,7 +458,7 @@ Você caminha até o porão, desce as escadas e destranca a porta enquanto sua m
 				'6.2': {
 					exit: () => store.commit('game/setOrb', true),
 					text: `
-Você fala e estala a língua, uma luz acende todo o cômodo, em um dos cantos um pequeno baú roxo emana uma aura azulada. Você abre o baú e pega o que tem dentro, um orbe azul opaco do tamanho de uma cabeça de gato. Você guarda o orbe em uma bolsa e volta para ver como sua esposa está.
+Você fala e estala a língua, uma luz acende todo o cômodo. Em um dos cantos, um pequeno baú roxo emana uma aura azulada. Você abre o baú e pega o que tem dentro, um orbe azul opaco do tamanho da cabeça de um gato. Você guarda o orbe em uma bolsa e volta para ver como sua esposa está.
 					`,
 					next: () => store.commit('scene/setPassage', '5'),
 				},
@@ -515,7 +529,7 @@ Sua esposa e seus filhos gritam enquanto os homens do inquisidor com espada na m
 						}
 					},
 					text: `
-O vento gélido da noite causa arrepios e te eriça os pelos enquanto você caminha com sua família pela estrada.
+O vento gélido da noite causa arrepios e eriça seus pelos enquanto você e sua família caminham pela estrada.
 					`,
 					next: () => store.commit('scene/setPassage', '8.1')
 				},
@@ -523,7 +537,7 @@ O vento gélido da noite causa arrepios e te eriça os pelos enquanto você cami
 				'8.1': {
 					name: dad.name,
 					text: `
-Coloquem os capuzes, tentaremos passar despercebidos pelos guardas.
+Coloquem os capuzes, tentaremos passar despercebidos por eles.
 					`,
 					next: () => store.commit('scene/setPassage', '8.2')
 				},
@@ -620,7 +634,7 @@ Você! Retire o capuz!
 
 				'10': {
 					text: `
-Você segura firme o cajado e murmura uma conjuração em voz baixa, sua família está assustada e as crianças se escondem atrás de Judith. Uma luz azulada envolve você em um círculo e o orbe em sua bolsa brilha e flutua para fora dela se acoplando no topo do seu cajado. Os soldados ficam paralisados enquanto raios crepitam em volta de você.
+Você segura firme o cajado e murmura uma conjuração em voz baixa, sua família está assustada e as crianças se escondem atrás de Judith. Uma luz azulada envolve você em um círculo e o orbe em sua bolsa brilha e flutua para fora dela se acoplando no topo do seu cajado. Os soldados ficam paralisados enquanto raios crepitam em volta de você. 
 					`,
 					next: () => store.commit('scene/setPassage', '10.1')
 				},
@@ -722,16 +736,19 @@ Prometa que você vai fugir.
 
 				'14.3': {
 					text: `
-Você meneia com sua cabeça, mesmo sem ter certeza e observa sua mulher e seus dois filhos adentrando a escuridão da noite. Então você ouve um Bak Bak Bak Bak em sua porta.
+Você meneia a cabeça, mesmo sem ter certeza, e observa sua mulher e seus dois filhos adentrando a escuridão da noite. Então você ouve um Bak Bak Bak em sua porta.
 					`,
 					next: () => store.commit('scene/setPassage', '14.4')
 				},
 
 				'14.4': {
 					text: `
-Você caminha até a porta e antes que ponha a mão sobre maçaneta ela é arrombada, três homens com armadura e de espadas desembainhadas invadem a sua casa e te cercam, quatro outros se aproximam. Você reconhece o líder deles, seu nome é Rauin, o inquisidor do rei. Um mago que presta vassalagem a família Bavarosa a décadas.
+Você caminha até a porta e antes que ponha a mão sobre maçaneta ela é arrombada, três homens com armadura e de espadas desembainhadas invadem sua casa e te cercam, quatro outros se aproximam. Você reconhece o líder deles, seu nome é Rauin, o inquisidor do rei. Um mago que presta vassalagem a família Bavarosa a décadas.
 					`,
-					next: () => store.commit('scene/setPassage', '14.5')
+					next: () => {
+						store.commit('scene/setPassage', null)
+						setTimeout(() => store.commit('scene/setPassage', '14.5'), 1000)
+					}
 				},
 
 				'14.5': {
@@ -759,7 +776,7 @@ Venho através do Rei Bavarosa terceiro entregar sua sentença
 
 				'14.8': {
 					text: `
-Uma folha de papel é jogada em sua direção e você a apanha antes dela cair no chão, enquanto você lê e entra em desespero por sua tolice Rauin dá o comando a seus homens.
+Uma folha de papel é jogada em sua direção e você a apanha antes dela cair no chão, enquanto você lê e entra em desespero por sua tolice, Rauin dá o comando a seus homens.
 					`,
 					next: () => store.commit('scene/setPassage', '14.9')
 				},
@@ -767,7 +784,7 @@ Uma folha de papel é jogada em sua direção e você a apanha antes dela cair n
 				'14.9': {
 					name: 'Rauin',
 					text: `
-Cerquem a casa, não deixem que ele saia com vida, nem que o fogo se espalhe. Vocês ai atrás preparem baldes e levem até meus soldados.
+Cerquem a casa, não deixem que ele saia com vida, nem que o fogo se espalhe. Vocês aí atrás preparem baldes e levem até meus soldados.
 					`,
 					next: () => store.commit('scene/setPassage', '14.10')
 				},
@@ -887,7 +904,7 @@ Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar 
 						}
 					}),
 					text: `
-As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos, você se aproxima de uma janela mas é atingido na têmpora por um pedaço de madeira que caiu do teto. O fogo consome toda sua casa e até mesmo suas lágrimas evaporam dentro dessa pira funerária. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
+As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos, você se aproxima de uma janela mas é atingido na têmpora por um pedaço de madeira que caiu do teto. O fogo consome toda sua casa e até mesmo suas lágrimas evaporam dentro dessa pira funerária. Em seu último suspiro, rodeado por dor e sofrimento, você se sente aliviado por pelo menos ter evitado tal fim para sua família.
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -902,14 +919,14 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 						}
 					}),
 					text: `
-As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Uma tora de madeira crepitante cai  em cima de sua perna, você desenha um círculo ao seu redor com o cajado, fecha os olhos e chora, enquanto seu lar é destruído. Mesmo com o escudo arcano você sofre queimaduras no corpo todo e é esmagado pelos destroços. Em seu último suspiro, rodeado por dor você e sofrimento se sente aliviado por pelo menos ter evitado tal fim para sua família.
+As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Uma tora de madeira crepitante cai  em cima de sua perna, você desenha um círculo ao seu redor com o cajado, fecha os olhos e chora, enquanto seu lar é destruído. Mesmo com o escudo arcano você sofre queimaduras no corpo todo e é esmagado pelos destroços. Em seu último suspiro, rodeado por dor e sofrimento você se sente aliviado por pelo menos ter evitado tal fim para sua família.
 					`,
 					next: () => store.commit('game/gameover')
 				},
 
 				'18': {
 					text: `
-Você afasta o armário da passagem secreta onde colocou as crianças e manda sua mulher entrar, relutante ela entra. Mas antes que você feche, ela te olha nos olhos.
+Você afasta o armário da passagem secreta onde colocou as crianças e manda sua mulher entrar, ela entra ainda que relutante. Mas antes que você feche, ela te olha nos olhos.
 					`,
 					next: () => store.commit('scene/setPassage', '18.1')
 				},
@@ -932,7 +949,7 @@ Querida eu não...
 
 				'18.2.1': {
 					text: `
-BAk BAk BAk sua despedida é cortada por batidas fortes na porta, você fecha o alçapão e afasta o armário sobre ele.
+BAk BAk BAk sua despedida é cortada por batidas fortes na porta, você fecha o alçapão e coloca o armário novamente sobre ele.
 					`,
 					next: () => store.commit('scene/setPassage', '18.3')
 				},
@@ -962,14 +979,14 @@ Rauin segura uma prancheta de madeira com um papel, puxa uma pena branca de um d
 				'18.6': {
 					name: 'Rauin',
 					text: `
-Venho através do Rei Bavarosa terceiro, entregar sua sentença
+Venho através do Rei Bavarosa terceiro, entregar sua sentença!
 					`,
 					next: () => store.commit('scene/setPassage', '18.7')
 				},
 
 				'18.7': {
 					text: `
-Uma folha de papel é jogada em sua direção e você a apanha antes dela cair no chão, enquanto você lê e entra em desespero por sua tolice Rauin dá o comando a seus homens.
+Uma folha de papel é jogada em sua direção e você a apanha antes dela cair no chão, enquanto você lê e entra em desespero por sua tolice, Rauin dá o comando a seus homens.
 					`,
 					next: () => store.commit('scene/setPassage', '18.8')
 				},
@@ -977,7 +994,7 @@ Uma folha de papel é jogada em sua direção e você a apanha antes dela cair n
 				'18.8': {
 					name: 'Rauin',
 					text: `
-Cerquem a casa, não deixem que ele saia com vida nem que o fogo se espalhe. Vocês ai atrás preparem baldes e levem até meus soldados.
+Cerquem a casa, não deixem que ele saia com vida nem que o fogo se espalhe. Vocês aí atrás preparem baldes e levem até meus soldados.
 					`,
 					next: () => store.commit('scene/setPassage', '18.9')
 				},
@@ -985,7 +1002,7 @@ Cerquem a casa, não deixem que ele saia com vida nem que o fogo se espalhe. Voc
 				'18.9': {
 					name: 'Rauin',
 					text: `
-	Dar dar et inferno!
+  Dar dar et inferno!
 					`,
 					next: () => store.commit('scene/setPassage', '18.10')
 				},
@@ -1049,7 +1066,7 @@ As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas p
 						}
 					}),
 					text: `
-As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Você corre até o armário e o empurra, o teto da casa começa a desmoronar e toras de fogo caem prendendo o armário e sua perna. Você consegue ouvir o choro de suas crianças e sua mulher se transformar em gritos desesperados, enquanto você murmura desculpas que nunca serão ouvidas.
+As paredes se inflamam de fora para dentro. Todas as saídas estão bloqueadas por homens armados com arcos. Você corre até o armário e o empurra, o teto da casa começa a desmoronar e toras de fogo caem prendendo o armário e sua perna. Você consegue ouvir o choro de suas crianças e da sua mulher se transformar em gritos desesperados por estarem sendo cozidos vivos, enquanto você murmura desculpas que nunca serão ouvidas.
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -1099,7 +1116,7 @@ Uma tora de madeira crepitante cai entre você e o esconderijo de sua família. 
 						sound: 'fire-01'
 					}),
 					text: `
-Você corre e tenta se esquivar de uma tora de fogo que cai do teto mas ela prende sua perna. Você ainda consegue desenhar o círculo em volta do armário.
+Você corre e tenta se esquivar de uma tora em chamas que cai do teto, mas ela prende sua perna. Você ainda consegue desenhar o círculo em volta do armário.
 					`,
 					next: () => store.commit('scene/setPassage', '23.1')
 				},
@@ -1122,7 +1139,7 @@ Judith! Mantenha as crianças junto de você e não se mexa! Eu te amo minha que
 						amount: 100
 					}),
 					text: `
-Os gritos de sua mulher são abafados pelo som da madeira estalando, mas você consegue ver o armário se mexer com a força que ela está fazendo.
+Os gritos de sua mulher são abafados pelo som da madeira estalando, mas você consegue ver o armário se mexer com a força que ela está fazendo para abrir-lo. Você tenta não gritar de dor, mas no fim não tem controle sobre isso, e grita até a morte. 
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -1139,7 +1156,7 @@ Você tem razão, é melhor arriscarmos. Me ajude a pegar as crianças. Nós vam
 					text: `
 Você e Judith afastam o armário pegam as crianças e correm pela porta dos fundos.
 
-Sua filha de dez anos Rehla segura uma boneca de palha e uma bolsa de pano, seu filho Jedah traz uma espada curta na cintura. O garoto tem treze anos de idade e apesar da intenção não sabe manusear a arma. Você toma a espada para si e entrega um machado para ele.
+Sua filha de dez anos Rehla segura uma boneca de palha e uma bolsa de pano, seu filho Jedah traz uma espada curta na cintura. O garoto tem treze anos de idade e apesar da intenção, não sabe manusear a arma. Você toma a espada para si e entrega um machado para ele.
 					`,
 					next: () => store.commit('scene/setPassage', '24.2')
 				},
@@ -1167,11 +1184,23 @@ As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo
 					actions: [
 						{
 							label: 'Ir pela estrada',
-							callback: () => store.commit('scene/setPassage', '8')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '8')
+									store.commit('game/save')
+								}, 1000)
+							}
 						},
 						{
 							label: 'Correr para floresta',
-							callback: () => store.commit('scene/setPassage', '9')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '9')
+									store.commit('game/save')
+								}, 1000)
+							}
 						}
 					] 
 				},
@@ -1179,7 +1208,7 @@ As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo
 				'25': {
 					name: dad.name,
 					text: `
-Lutarei e protegerei você e as crianças, é o meu dever. Agora esconda-se
+Lutarei e protegerei você e as crianças, é o meu dever. Agora esconda-se!
 					`,
 					next: () => store.commit('scene/setPassage', '25.1')
 				},
@@ -1436,11 +1465,23 @@ As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo
 					actions: [
 						{
 							label: 'Ir pela estrada',
-							callback: () => store.commit('scene/setPassage', '8')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '8')
+									store.commit('game/save')
+								}, 1000)
+							}
 						},
 						{
 							label: 'Correr para floresta',
-							callback: () => store.commit('scene/setPassage', '9')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '9')
+									store.commit('game/save')
+								}, 1000)
+							}
 						},
 					]
 				},
@@ -1453,6 +1494,13 @@ As estradas talvez não sejam o local mais seguro, você conhece um caminho pelo
 							setTimeout(() => store.commit('scene/setPassage', '31'), 1000)
 						}
 					},
+					text: `
+Você puxa Judith até um canto da sala e tenta explicar a situação.
+					`,
+					next: () => store.commit('31.1.1')
+				},
+
+				'31.1.1': {
 					name: dad.name,
 					text: `
 Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos contratados por um homem que encomendou uma magia de conjuração do nível mais elevado, o homem jurou que não tinha assuntos no reino e pagou com seu peso em ouro. Então fizemos um pergaminho conjuratório para ele, uma magia infernal que traz uma onda de fogo.
@@ -1463,7 +1511,7 @@ Almir está morto, nós precisamos sair da cidade agora mesmo. Eu e Almir fomos 
 				'31.1': {
 					name: mom.name,
 					text: `
-Pelos Deuses, tem algo a ver com aquele ataque terrorista que aconteceu na torre leste?
+Pelos Deuses, tem algo a ver com a queda da torre leste?
 					`,
 					next: () => store.commit('scene/setPassage', '31.2')
 				},
@@ -1550,7 +1598,7 @@ Você pega sua mochila e seu cajado, enquanto sua mulher pega as crianças e arr
 				'33.1': {
 					name: mom.name,
 					text: `
-Mais uma vez te passaram a perna? Que novidade hein, você deveria desconfiar mais das pessoas depois disso acontecer tantas vezes.
+Mais uma vez te passaram a perna? Que novidade hein? Você deveria desconfiar mais das pessoas depois disso acontecer tantas vezes.
 					`,
 					next: () => store.commit('scene/setPassage', '33.2')
 				},
@@ -1587,18 +1635,30 @@ Estou indo resolver um problema, tranque as portas e não abra pra ninguém.
 				},
 
 				'33.6': {
-					init: () => store.commit('scene/setBackground', null),
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/street-02.jpg')),
 					text: `
 Você acopla o orbe na ponta de seu cajado e sai de casa a passos largos, deixando para trás sua mulher e seus filhos atordoados.
 					`,
 					actions: [
 						{
 							label: 'Ir pela estrada sozinho',
-							callback: () => store.commit('scene/setPassage', '34')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '34')
+									store.commit('game/save')
+								}, 1000)
+							}
 						},
 						{
 							label: 'Voltar para casa',
-							callback: () => store.commit('scene/setPassage', '35')
+							callback: () => {
+								store.commit('scene/setPassage', null)
+								setTimeout(() => {
+									store.commit('scene/setPassage', '35')
+									store.commit('game/save')
+								}, 1000)
+							}
 						}
 					]
 				},
@@ -1606,10 +1666,9 @@ Você acopla o orbe na ponta de seu cajado e sai de casa a passos largos, deixan
 				'34': {
 					first: true,
 					init(previous) {
-						store.commit('scene/setBackground', require('@/assets/images/bgs/street-02.jpg'))
-
 						if (previous != null) {
 							store.commit('scene/setPassage', null)
+							store.commit('scene/setBackground', require('@/assets/images/bgs/street-01.jpg'))
 
 							setTimeout(() => store.commit('scene/setPassage', '34'), 1000)
 						}
@@ -1639,11 +1698,14 @@ Você sente o ar se condensar enquanto respira, coloca o capuz e escuta um agrup
 				},
 
 				'35': {
-					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
+					init: () => {
+						store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg'))
+						store.commit('game/regret')
+					},
 					text: `
-No meio do caminho você pensa melhor e percebe que é perigoso demais deixar sua família sozinha, então volta e conta toda a verdade a Judith
+No meio do caminho, ao avistar os guardas e o líder deles. Você pensa melhor e percebe que é perigoso demais deixar sua família sozinha, então volta e conta toda a verdade a Judith.
 					`,
-					next: () => store.commit('scene/setPassage', '35.1')
+					next: () => store.commit('scene/setPassage', '1')
 				},
 
 				'35.1': {
@@ -1898,7 +1960,7 @@ Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e
 						}
 					},
 					text: `
-Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você se esquiva da primeira investida de um dos guardas, conjura uma magia telecinética e lança o corpo de um dos guardas nos perseguidores de sua família.
+Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você se esquiva da primeira investida de um dos guardas, conjura uma magia telecinética e lança o corpo de um dos guardas nos que perseguem sua família.
 					`,
 					next: () => store.commit('scene/setPassage', '40.1')
 				},
@@ -1922,7 +1984,7 @@ Você corre para alcançá-los enquanto eles entram na escura floresta de Germon
 						}
 					},
 					text: `
-Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você é atingido na primeira investida por um dos guardas, os outros dois enchem seu corpo de flechas. Você morre sem saber se a sua família conseguiu escapar.
+Sua família corre na única direção em que não tem guardas e é perseguida por dois deles. Você é atingido por um guarda na barriga, os outros dois enchem seu corpo de flechas. Você morre sem saber se a sua família conseguiu escapar.
 					`
 				},
 
@@ -1930,7 +1992,7 @@ Sua família corre na única direção em que não tem guardas e é perseguida p
 					first: true,
 					init: () => store.commit('game/damage', { target: 'dad', amount: 100, sound: 'sword-01' }),
 					text: `
-Você se defende como pode mas é golpeado por todos os lados, alguns soldados soltam flechas na sua direção. Em pouco tempo você não tem mais forças para se defender e é arrastado até Rauin, que o golpeia com o cetro abrindo seu crânio, colorindo bizarramente o chão. 
+Você se defende como pode mas é golpeado por todos os lados, alguns soldados soltam flechas na sua direção. Em pouco tempo você não tem mais forças para se defender e é arrastado até Rauin, que o golpeia com o cetro abrindo seu crânio, colorindo bizarramente o chão de sangue e miolos. 
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -1969,14 +2031,14 @@ O inquisidor faz um gesto e todos os homens te atacam ao mesmo tempo, lâminas e
 					},
 					name: dad.name,
 					text: `
-Vossa excelência Rauin, sei por que você veio e tenho algo que talvez possa te interessar!
+Vossa excelência Rauin, sei por que você veio e tenho algo que talvez possa te interessar.
 					`,
 					next: () => store.commit('scene/setPassage', '44.1.1')
 				},
 
 				'44.1.1': {
 					text: `
-Você grita, retirando o capuz, levanta as mãos lentamente e começa a pegar sua bolsa.
+Você tira o capuz sem desviar os olhos dele, levanta as mãos lentamente e começa a pegar sua bolsa.
 					`,
 					next: () => store.commit('scene/setPassage', '44.1')
 				},
@@ -1985,7 +2047,7 @@ Você grita, retirando o capuz, levanta as mãos lentamente e começa a pegar su
 					text: `
 Rauin levanta o cajado e todos os homens apontam as armas para você.
 
-Você tira o orbe azul de sua bolsa e apresenta ao homem. Rauin fita o objeto por alguns instantes e balança a cabeça positivamente.
+Você tira o orbe azul de sua bolsa e apresenta ao homem. Rauin fita o objeto por alguns segundos e balança a cabeça positivamente.
 					`,
 					next: () => store.commit('scene/setPassage', '44.2')
 				},
@@ -2045,7 +2107,7 @@ Abaixem as armas e se afastem dele e de sua família
 						store.commit('game/negotiate')
 					},
 					text: `
-Todos os seis soldados guardam as espadas e vão até o inquisidor, que estende a mão. Você entrega o orbe e caminha até sua mulher ainda na defensiva.
+Todos os seis soldados guardam as espadas e vão até o inquisidor, que estende a mão em sua direção. Você entrega o orbe e caminha até sua mulher ainda na defensiva.
 
 					`,
 					next: () => store.commit('scene/setPassage', '44.9')
@@ -2053,7 +2115,7 @@ Todos os seis soldados guardam as espadas e vão até o inquisidor, que estende 
 
 				'44.9': {
 					text: `
-Rauin olha animado para o orbe e sorri, ele esporeia o cavalo em direção sua direção.
+Rauin olha animado para o orbe e sorri, ele esporeia o cavalo em direção a sua casa.
 					`,
 					next: () => {
 						store.commit('scene/setPassage', null)
@@ -2064,7 +2126,7 @@ Rauin olha animado para o orbe e sorri, ele esporeia o cavalo em direção sua d
 				'44.10': {
 					name: 'Rauin',
 					text: `
-Não fique na cidade, se mais alguem te ver por ai terei que ir atrás de você. E nenhum de nós dois vai querer isso, não é mesmo?
+Não fique na cidade, se mais alguem te ver por aí, terei que ir atrás de você. E nenhum de nós dois vai querer isso, não é mesmo?
 					`,
 					next: () => store.commit('scene/setPassage', '9')
 				},
@@ -2163,7 +2225,7 @@ O restante dos homens são mais precavidos, enquanto dois atacam corpo a corpo u
 						store.commit('game/damage', { amount: 30, target: 'dad', sound: 'arrow-01' })
 					},
 					text: `
-Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e atacam. Mesmo assim os dois tombam mortos, mas o terceiro te atinge com uma flecha no ombro. Ao ser atingido você nota que Rauin está com sua esposa no cavalo.
+Os raios são lançados de seu cajado repetidas vezes, dois soldados se esquivam e atacam. Mesmo assim os dois tombam mortos, mas o terceiro te atinge com uma flecha no ombro. Ao ser atingido você nota que Rauin está com sua esposa no cavalo.
 					`,
 					next: () => store.commit('scene/setPassage', '50.1')
 				},
@@ -2171,7 +2233,15 @@ Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam e
 				'50.1': {
 					name: 'Rauin',
 					text: `
-Se desejar ver sua esposa novamente vá até o castelo do rei e se entregue” Ele esporeia o cavalo e some, levantando poeira.
+Se desejar ver sua esposa novamente vá até o castelo do rei e se entregue
+Se desejar ver sua esposa novamente vá até o castelo do rei e se entregue” 
+					`,
+					next: () => store.commit('scene/setPassage', '50.1.1')
+				},
+
+				'50.1.1': {
+					text: `
+Se desejar ver sua esposa novamente vá até o castelo do rei e se entregue
 					`,
 					next: () => store.commit('scene/setPassage', '50.2')
 				},
@@ -2186,7 +2256,7 @@ Não! Seu maldito!
 
 				'50.3': {
 					text: `
-O soldado restante treme tentando colocar a flecha de volta no arco e você esmaga sua cabeça com o cajado. Sua alma se enche de fúria, a mulher que você ama foi levada mas você ainda tem duas crianças para proteger.
+O soldado restante treme tentando colocar mais uma flecha no arco e você esmaga sua cabeça com o cajado. Sua alma se enche de fúria, a mulher que você ama foi levada mas você ainda tem duas crianças para proteger.
 					`,
 					actions: [
 						{
@@ -2256,7 +2326,14 @@ Seus filhos te agarram e choram sem querer te deixar partir, você se abaixa par
 				'53.4': {
 					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/castle-01.jpg')),
 					text: `
-O salão está jantando quando você é colocado em um banco num dos cantos do salão, Rauin traz Judith pelo braço e a coloca de frente para você. Bavarosa se levanta e caminha lentamente, com seu corpanzil de urso esbarrando nas outras mesas e cadeiras do salão.
+Você segue em direção ao castelo do rei Bavarosa, carregando todo o ódio que um homem bom pode carregar. Já na porta do castelo guardas te cercam retirando suas posses, te algemam e te levam a presença do rei. Ao entrar no castelo você vê proteções mágicas desenhadas em todas as paredes, pela aura do lugar você sente que não poderá contar com magia ali.
+					`,
+					next: () => store.commit('scene/setPassage', '53.4.1')
+				},
+
+				'53.4.1': {
+					text: `
+O rei está jantando quando você é colocado em um banco num dos cantos do salão, Rauin traz Judith pelo braço e a coloca de frente para você. Bavarosa se levanta e caminha lentamente com seu corpanzil de urso, esbarrando nas outras mesas e cadeiras do salão.
 					`,
 					next: () => store.commit('scene/setPassage', '53.5')
 				},
@@ -2362,7 +2439,7 @@ Adeus querida, vá. Salve nossos filhos.
 				'53.17': {
 					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'fire-01' }),
 					text: `
-Dois guardas te agarram e te levam para um terreno a céu-aberto, uma fogueira já está montada. Você é arrastado e amarrado até o aglomerado de madeira. A dor de ser queimado vivo é bem pior do que você imaginava. Depois da fogueira ser acesa você demora pelo menos quinze minutos até morrer. Nos primeiros minutos você gritava até sua garganta sangrar, seus gritos viraram urros desesperados e gemidos incompreensíveis, passando por chiados mórbidos até chegar no silêncio mortal. E a morte foi o maior dos alívios.
+Dois guardas te agarram e te levam para um terreno a céu-aberto, uma fogueira já está montada. Você é arrastado e amarrado até o aglomerado de madeira. A dor de ser queimado vivo é bem pior do que você imaginava. Depois da fogueira ser acesa você demora pelo menos quinze minutos até morrer. Nos primeiros minutos você gritou até sua garganta sangrar, seus gritos viraram urros desesperados e gemidos incompreensíveis, passando por chiados mórbidos até chegar no silêncio mortal. E o abraço da morte foi o mais doce alivio.
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -2491,12 +2568,13 @@ Você puxa seu filho por um braço e carrega a pequena Relah com o outro, indo a
 
 				'56': {
 					text: `
-Você gira o cajado e derruba um dos atacantes, antes que ele pudesse se levantar você saca sua espada curta com a mão esquerda e atravessa a garganta do homem, banhando o chão com seu sangue. O outro soldado ataca por cima e você se esquiva cortando os tendões da parte de trás do joelho do homem, ele tropeça e é recebe um golpe fatal que lhe amassa o crânio. Enquanto você finaliza o segundo homem, uma flecha te atinge no ombro. Ao ser atingido você nota que Rauin está com sua esposa no cavalo.
+Você gira o cajado e derruba um dos atacantes, antes que ele pudesse se levantar você saca sua espada curta com a mão esquerda e atravessa a garganta do homem, banhando o chão com seu sangue. O outro soldado ataca por cima e você se esquiva cortando os tendões da parte de trás do joelho do homem, ele tropeça e recebe um golpe fatal que lhe amassa o crânio. Enquanto você finaliza o segundo homem, uma flecha te atinge no ombro. Ao ser atingido você nota que Rauin está com sua esposa no cavalo.
 					`,
 					next: () => store.commit('scene/setPassage', '50.1')
 				},
 
 				'57': {
+					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'sword-01' }),
 					text: `
 Você ataca com cajado repetidas vezes, os soldados se esquivam e contra-atacam. Rauin lança um ataque em conjunto com o arqueiro, meia dúzia de lâminas voam em sua direção. Você não se esquiva, caso o fizesse as lâminas atingiriam sua família. Então você sangra até a morte enquanto sua família chora desesperadamente.
 					`,
@@ -2539,7 +2617,6 @@ Sua família corre na única direção em que não tem guardas e é perseguida p
 					},
 					text: `
 Você segura firme o cajado e murmura uma conjuração em voz baixa, sua família está assustada e as crianças se escondem atrás de Judith. Uma luz acinzentada envolve você em um círculo. Os soldados ficam paralisados enquanto raios crepitam em volta de você. 
-
 					`,
 					next: () => {
 						store.commit('scene/setPassage', null)
@@ -2613,7 +2690,7 @@ Mas é tarde demais, você já terminou o murmúrio e um raio atravessa o peito 
 						store.commit('game/damage', { target: 'dad', amount: 100 })
 					},
 					text: `
-Um raio é lançado de seu cajado na direção dos homens, mas não rápido o suficiente. Os três conseguem se esquivar e te atacam em conjunto. Os homens são guerreiros treinados e por mas que você consiga se defender dos primeiros golpes, é cortado por todos os lados e inevitavelmente sofre um ferimento fatal. Sua cabeça é cortada e rola morro abaixo, enquanto sua família grita horrorizada. 
+Um raio é lançado de seu cajado na direção dos homens, mas não rápido o suficiente. Os três conseguem se esquivar e te atacam em conjunto. Os homens são guerreiros treinados e por mas que você consiga se defender dos primeiros golpes, é cortado por todos os lados e inevitavelmente sofre um ferimento fatal. Sua cabeça é cortada e rola morro abaixo, enquanto sua família grita horrorizada.
 					`,
 					next: () => store.commit('game/gameover')
 				},
@@ -2691,7 +2768,7 @@ O líder dos homens faz um gesto para que ataquem e eles partem para cima de voc
 
 				'72.3': {
 					text: `
-Rauin da meia volta no cavalo, protegido por uma bolha mágica ele galopa em direção ao castelo do rei Bavarosa. De uma coisa você tem certeza, na próxima vez ele vai vir mais preparado. Então você corre até sua casa para fugir com sua família.
+Rauin dá meia volta no cavalo, protegido por uma bolha mágica ele galopa em direção ao castelo do rei Bavarosa. De uma coisa você tem certeza, na próxima vez ele vai vir mais preparado. Então você corre até sua casa para fugir com sua família.
 					`,
 					next: () => {
 						store.commit('scene/setPassage', null)
@@ -2700,6 +2777,7 @@ Rauin da meia volta no cavalo, protegido por uma bolha mágica ele galopa em dir
 				},
 
 				'72.4': {
+					init: () => store.commit('scene/setBackground', require('@/assets/images/bgs/home-01.jpg')),
 					text: `
 Você volta para casa e conta todo o ocorrido a sua esposa.
 					`,
@@ -2739,9 +2817,20 @@ Judith não esconde o espanto quando você conta sobre o que fez no desfiladeiro
 
 				'72.9': {
 					text: `
-Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar aqui com um exército ou coisa pior, venha. Temos que ir pela floresta.
+Rauin escapou com vida e fugiu para o castelo do rei, em pouco tempo deve estar aqui com um exército ou coisa pior, venha. Temos que ir pela *floresta*.
 					`,
 					next: () => store.commit('scene/setPassage', '9')
+				},
+
+				'73': {
+					init: () => {
+						store.commit('audio/play', 'thunder-01')
+						setTimeout(() => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'sword-01' }), 2000)
+					},
+					text: `
+Os raios são lançados de seu cajado repetidas vezes, os soldados se esquivam tentando se aproximar de você, alguns deles são atingidos mas a maioria continua de pé. Rauin lança um ataque em conjunto com um arqueiro, meia dúzia de lâminas voam em sua direção. Você é acertado e sangra até a morte sozinho…
+					`,
+					next: () => store.commit('game/gameover')
 				},
 
 				'74': {
@@ -2760,13 +2849,20 @@ Aproveitem! Corram!
 
 				'74.1': {
 					text: `
-Sua família corre e você os acompanha, os outros soldados que ficaram atrás pensaram duas vezes antes de tentar te atacar quando um deles é atingido por um raio ao correr na sua direção.
+Sua família corre e você os acompanha, os outros soldados que ficaram atrás pensaram duas vezes antes de tentar te atacar quando um deles foi atingido por um raio ao correr na sua direção.
 					`,
 					next: () => store.commit('scene/setPassage', '9')
 				},
 
 				'75': {
 					init: () => store.commit('game/damage', { amount: 100, target: 'dad', sound: 'arrow-01' }),
+					text: `
+Aproveitem! Corram!
+					`,
+					next: () => store.commit('scene/setPassage', '74.1')
+				},
+
+				'74.1': {
 					text: `
 Sua família corre e você os acompanha, quando você tenta conjurar um raio na direção dos soldados é atingido por uma flecha entre os olhos e tomba morto de lado.
 					`,
